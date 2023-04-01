@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2018", "ESNext.AsyncIterable"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  }
+}
