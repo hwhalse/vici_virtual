@@ -50,45 +50,30 @@ input UpdateUserInput {
   email: String
 }
 
-  type Equipment {
-    name: String
-  }
-
-  type Exercise {
-    id: ID
-    name: String
-    type: String
-    posture: String
-    movement: String
-    symmetry: String
-    equipment: [String]
+type Equipment {
+  name: String
 }
 
-  type Query {
-    ex: Exercise
-    eq: Equipment
-  }
-
-  type Workout {
-    name: String
-    created: String
-    created_by: String
-    exercises: [Exercise]
-    difficulty: Int
-    notes: String
-  }
-`;
-
-export const exDefs = `#graphql
 type Exercise {
-    name: String
-    type: String
-    focus: String
-    bodypart: String
-    sets: Int
-    reps: Int
-    intensity: Int
+  id: ID
+  name: String
+  type: String
+  posture: String
+  movement: String
+  symmetry: String
+  equipment: [String]
 }
+
 type Query {
-    exercises: [Exercise]
-}`
+  ex: Exercise
+  eq: Equipment
+}
+
+type Workout {
+  name: String
+  created: String
+  created_by: String
+  exercises: [Exercise]
+  difficulty: Int
+  notes: String
+}`;

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Button, TouchableOpacity, FlatList } from "react-native";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { CREATE_EXERCISE, GET_EQUIPMENT, SEARCH_EQUIPMENT } from "../GQL/queries";
 import Equipment from "./Equipment";
+import CreateExerciseList from "./CreateExerciseList";
 
 interface ExerciseItem {
     name: string;
@@ -24,10 +25,10 @@ export default function CreateExercise () {
         equipment: []
     })
 
-    const [showPosture, setShowPosture] = useState(false)
-    const [showMovement, setShowMovement] = useState(false)
-    const [showSymmetry, setShowSymmetry] = useState(false)
-    const [showTypes, setShowTypes] = useState(false)
+    const [showTypes, setShowTypes] = useState(false);
+    const [showPosture, setShowPosture] = useState(false);
+    const [showMovements, setShowMovements] = useState(false);
+    const [showSymmetry, setShowSymmetry] = useState(false);
 
     const [searchName, setSearchName] = useState('')
 
@@ -39,7 +40,7 @@ export default function CreateExercise () {
       setEx({...ex, equipment: [...ex.equipment, name]})
     }
 
-    const deleteFromEquipment = (name: string) => {
+    const deleteFromEquipment = (name: string): void => {
       setEx({...ex, equipment: ex.equipment.filter((el: string) => el !== name)})
     }
     
@@ -63,21 +64,7 @@ export default function CreateExercise () {
       getEquipment({variables: {name: searchName}})
     }
 
-    const showType = () => {
-      setShowTypes(!showTypes)
-    }
-
-    const posture = () => {
-      setShowPosture(!showPosture)
-    }
-
-    const movement = () => {
-      setShowMovement(!showMovement)
-    }
-
-    const symmetry = () => {
-      setShowSymmetry(!showSymmetry)
-    }
+    
 
   return (
     <View>
@@ -92,21 +79,21 @@ export default function CreateExercise () {
             <Text style={{marginRight: 5}}>Movement: {ex.movement}</Text>
             <Text style={{marginRight: 5}}>Symmetry: {ex.symmetry}</Text>
             <Text>Equipment:</Text>
-            {ex.equipment && ex.equipment.map((name, i) => <View style={{flexDirection: 'row'}}><Text key={i + 49}>{name}</Text><Button title="-" onPress={() => deleteFromEquipment(name)}/></View>)}
-            <Button title="Add Type" onPress={showType}/>
-            {showTypes && types.map((el: any) => <View style={{flexDirection: 'row', alignItems: 'center'}}><Text>{el}</Text><Button title="+" onPress={() => {setEx({...ex, type: el});posture()}}/></View>)}
-            <Button title="Add Posture" onPress={posture}/>
-            {showPosture && postures.map((el: any) => <View style={{flexDirection: 'row', alignItems: 'center'}}><Text>{el}</Text><Button title="+" onPress={() => {setEx({...ex, posture: el});posture()}}/></View>)}
-            <Button title="Add Movement" onPress={movement}/>
-            {showMovement && movements.map((el: any) => <View style={{flexDirection: 'row', alignItems: 'center'}}><Text>{el}</Text><Button title="+" onPress={() => {setEx({...ex, movement: el});movement()}}/></View>)}
-            <Button title="Add Symmetry" onPress={symmetry}/>
-            {showSymmetry && symmetrys.map((el: any) => <View style={{flexDirection: 'row', alignItems: 'center'}}><Text>{el}</Text><Button title="+" onPress={() => {setEx({...ex, symmetry: el});symmetry()}}/></View>)}
+            {ex.equipment && <FlatList data={ex.equipment} keyExtractor={(item, index) => `${item}, ${index}`}renderItem={({item}) => <CreateExerciseList text={item} callback={() => deleteFromEquipment(item)} />} />}
+            <Button title="Add Type" onPress={() => setShowTypes(!showTypes)}/>
+            {showTypes && <FlatList data={types} keyExtractor={(item, index) => `${item} ${index}`} renderItem={({item}) => <CreateExerciseList text={item} callback={() => setEx({...ex, type: item})} toggle={() => setShowTypes(!showTypes)} />}/>}
+            <Button title="Add Posture" onPress={() => setShowPosture(!showPosture)}/>
+            {showPosture && <FlatList data={postures} keyExtractor={(item, index) => `${item} ${index}`} renderItem={({item}) => <CreateExerciseList text={item} callback={() => setEx({...ex, posture: item})} toggle={() => setShowPosture(!showPosture)} />}/>}
+            <Button title="Add Movement" onPress={() => setShowMovements(!showMovements)}/>
+            {showMovements && <FlatList data={movements} keyExtractor={(item, index) => `${item} ${index}`} renderItem={({item}) => <CreateExerciseList text={item} callback={() => setEx({...ex, movement: item})} toggle={() => setShowMovements(!showMovements)} />}/>}
+            <Button title="Add Symmetry" onPress={() => setShowSymmetry(!showSymmetry)}/>
+            {showSymmetry && <FlatList data={symmetrys} keyExtractor={(item, index) => `${item} ${index}`} renderItem={({item}) => <CreateExerciseList text={item} callback={() => setEx({...ex, symmetry: item})} toggle={() => setShowSymmetry(!showSymmetry)} />}/>}
             <Button title="Save Exercise" onPress={addExercise} />
         </View>
         <View>
             <Text>Add Equipment:</Text>
             <TextInput placeholder="..." onChangeText={(text: string) => setSearchName(text)}/>
-            {data && data.getEquipmentByString.filter((equipment: any) => !ex.equipment.includes(equipment.name)).map((equipment: any, i: number) => <Equipment key={i + 50} add={addToEquipment} name={equipment.name}/>)}
+            {data && <FlatList data={data.getEquipmentByString.filter((equipment: any) => !ex.equipment.includes(equipment.name))} keyExtractor={(item, index) => `${item}, ${index}`} renderItem={({item}) => <Equipment add={addToEquipment} name={item.name}/>} />}
             <Button title="Search Equipment" onPress={search}/>
         </View>
     </View>

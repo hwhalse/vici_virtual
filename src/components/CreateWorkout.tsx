@@ -17,6 +17,7 @@ type WorkoutExercise = {
 
 interface Workout {
   name: string;
+  date: string;
   author: string;
   type: string; 
   level: number;
@@ -33,12 +34,15 @@ interface Ex {
   equipment: string[]
 }
 
+const today = Date.now().toLocaleString()
+
 export default function CreateWorkout ({navigation}: any) {
 
   const [showTypes, setShowTypes] = useState(false)
   const [workout, setWorkout] = useState<Workout>({
     name: '',
     author: '',
+    date: today,
     type: '',
     level: 0,
     exercises: [],
