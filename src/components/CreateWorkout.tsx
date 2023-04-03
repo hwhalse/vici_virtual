@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { FlatList, Text, View, ListRenderItem, TextInput, Button } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
-import { GET_EXERCISES, SEARCH_EXERCISES } from "../GQL/queries";
+import { CREATE_WORKOUT, GET_EXERCISES, SEARCH_EXERCISES } from "../GQL/queries";
 import Exercise from "./Exercise";
 import ExerciseListItem from "./ExerciseListItem";
 
@@ -47,6 +47,17 @@ export default function CreateWorkout ({navigation}: any) {
     level: 0,
     exercises: [],
   })
+
+  const [createWorkout] = useMutation(CREATE_WORKOUT, {
+    onError: (err) => console.log(JSON.stringify(err))
+  })
+
+  const addWorkout = (e: any): void => {
+    createWorkout({variables: {
+      input: workout
+    }
+  })
+}
 
   const workoutTypes = ["Strength", "Hypertrohpy", "Cardio - Endurance", "Cardio - Sprint", "HIIT", "Flexibility", "Recovery", "Bodyweight", "Hybrid"];
 
@@ -111,11 +122,8 @@ export default function CreateWorkout ({navigation}: any) {
                     </View>
                   </View>
                 </View>
-              <View>
-                <Text>Equipment needed:</Text>
-              </View>
             </View>
-            <Button title="Save Workout" />
+            <Button title="Save Workout" onPress={addWorkout} />
         </View>
     )
 }

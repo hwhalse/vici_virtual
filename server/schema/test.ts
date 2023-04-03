@@ -24,6 +24,7 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   updateUserById(input: UpdateUserInput): User!
   createExercise(input: CreateExerciseInput): Exercise!
+  createWorkout(input: CreateWorkoutInput): Workout!
 }
 
 input CreateUserInput {
@@ -50,6 +51,23 @@ input UpdateUserInput {
   email: String
 }
 
+input CreateWorkoutInput {
+  name: String
+  type: String
+  created_by: String
+  date: String
+  level: Int
+  exercises: [WorkoutExerciseArray]
+}
+
+input WorkoutExerciseArray {
+  name: String
+  weight: Int
+  sets: Int
+  reps: Int
+  equipment: [String]
+}
+
 type Equipment {
   name: String
 }
@@ -64,6 +82,14 @@ type Exercise {
   equipment: [String]
 }
 
+type WorkoutExercise {
+  name: String
+  weight: Int
+  sets: Int
+  reps: Int
+  equipment: [Equipment]
+}
+
 type Query {
   ex: Exercise
   eq: Equipment
@@ -71,9 +97,9 @@ type Query {
 
 type Workout {
   name: String
-  created: String
+  type: String
   created_by: String
-  exercises: [Exercise]
-  difficulty: Int
-  notes: String
+  date: String
+  level: Int
+  exercises: [WorkoutExercise]
 }`;

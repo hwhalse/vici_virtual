@@ -11,3 +11,11 @@ export interface IExercise {
 export interface ExerciseSearchString {
     name: string
 }
+
+export interface WorkoutExercise {
+  name: string,
+  weight: number,
+  sets: number,
+  reps: number,
+  equipment?: string[]
+}

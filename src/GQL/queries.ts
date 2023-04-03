@@ -41,3 +41,10 @@ mutation CreateExercise($input: CreateExerciseInput) {
     type
   }
 }`;
+
+export const CREATE_WORKOUT = gql`
+mutation CreateWorkout($input: CreateWorkoutInput) {
+  createWorkout(input: $input) {
+    name
+  }
+}`

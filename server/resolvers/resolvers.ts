@@ -1,6 +1,7 @@
 import { UserResolvers } from "./UserResolvers";
 import { ExerciseResolvers } from "./ExerciseResolvers";
 import { EquipmentResolvers } from "./EquipmentResolvers";
+import { WorkoutResolvers } from "./WorkoutResolvers";
 export const resolvers = {
   Query: {
     getAllUsers: UserResolvers.getAllUsers,
@@ -14,5 +15,6 @@ export const resolvers = {
     createUser: UserResolvers.createUser,
     updateUserById: UserResolvers.updateUserById,
     createExercise: ExerciseResolvers.createExercise,
+    createWorkout: WorkoutResolvers.createWorkout
   }
 };
