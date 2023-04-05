@@ -73,12 +73,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-client.query({
-  query: gql`query exercises {
-    bodypart
-  }`
-}).then((result) => console.log(result))
-
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -91,7 +85,6 @@ function App(): JSX.Element {
   const retrieveLoginStatus = async (): Promise<void> => {
     try {
       const session = await EncryptedStorage.getItem("user_session")
-      console.log(session)
       if (session !== undefined) setAuthenticationStatus(true)
     } catch(err) {
       console.log(err)

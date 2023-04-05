@@ -7,6 +7,26 @@ query Exercises {
   }
 }`
 
+export const GET_USER_WORKOUTS = gql`
+query GetWorkoutsByAuthor($username: String!) {
+  getWorkoutsByAuthor(username: $username) {
+    name
+    created_by
+    date
+    exercises {
+      equipment {
+        name
+      },
+      name
+      reps
+      sets
+      weight
+    },
+    level
+    type
+  }
+}`
+
 export const GET_EQUIPMENT = gql`
 query Equipments {
   equipments {

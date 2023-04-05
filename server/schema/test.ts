@@ -17,6 +17,7 @@ type Query {
   getExerciseByName(name: String!): [Exercise!]
   getAllEquipment: [Equipment!]
   getEquipmentByString(name: String!): [Equipment!]
+  getWorkoutsByAuthor(username: String!): [Workout]
 }
 
 type Mutation {
@@ -93,6 +94,7 @@ type WorkoutExercise {
 type Query {
   ex: Exercise
   eq: Equipment
+  workout: WorkoutExercise
 }
 
 type Workout {

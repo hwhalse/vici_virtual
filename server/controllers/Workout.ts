@@ -10,5 +10,14 @@ export const Workout = {
         const data = await pool.query(query, values).then((data: any) => data.rows[0]).catch((error: Error) => console.log(error));
         console.log(data)
         return data
+    },
+
+    findByUser: async (args: {username: string}): Promise<void | IWorkout> => {
+        const username = args.username
+        const query = `SELECT * FROM workout WHERE created_by = $1`;
+        const values = [username];
+        const data = await pool.query(query, values).then((data: any) => data.rows).catch((err: Error) => console.log(err));
+        console.log(data);
+        return data
     }
 }

@@ -10,6 +10,7 @@ export const resolvers = {
     getExerciseByName: ExerciseResolvers.getExerciseByName,
     getAllEquipment: EquipmentResolvers.getAllEquipment,
     getEquipmentByString: EquipmentResolvers.getEquipmentByString,
+    getWorkoutsByAuthor: WorkoutResolvers.getWorkoutByAuthor,
 },
   Mutation: {
     createUser: UserResolvers.createUser,
