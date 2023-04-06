@@ -66,6 +66,7 @@ input WorkoutExerciseArray {
   weight: Int
   sets: Int
   reps: Int
+  duration: Int
   equipment: [String]
 }
 
@@ -86,6 +87,7 @@ type Exercise {
 type WorkoutExercise {
   name: String
   weight: Int
+  duration: Int
   sets: Int
   reps: Int
   equipment: [Equipment]

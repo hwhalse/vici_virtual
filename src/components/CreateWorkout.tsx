@@ -5,11 +5,13 @@ import { NavigationProp } from "@react-navigation/native";
 import { CREATE_WORKOUT, GET_EXERCISES, SEARCH_EXERCISES } from "../GQL/queries";
 import Exercise from "./Exercise";
 import ExerciseListItem from "./ExerciseListItem";
+import EncryptedStorage from "react-native-encrypted-storage";
 
 type WorkoutExercise = {
-  id: number | string,
+  id?: number | string,
   name: string,
   weight: number | string,
+  duration: number;
   sets: number | string,
   reps: number | string,
   equipment?: string[]
@@ -18,14 +20,14 @@ type WorkoutExercise = {
 interface Workout {
   name: string;
   date: string;
-  author: string;
+  created_by: string;
   type: string; 
   level: number;
   exercises: WorkoutExercise[]
 }
 
 interface Ex {
-  id: string | number;
+  id?: string | number | null;
   name: string;
   type: string;
   posture: string;
@@ -37,22 +39,36 @@ interface Ex {
 const today = Date.now().toLocaleString()
 
 export default function CreateWorkout ({navigation}: any) {
-
+  const [user, setUser] = useState('')
   const [showTypes, setShowTypes] = useState(false)
   const [workout, setWorkout] = useState<Workout>({
     name: '',
-    author: '',
+    created_by: user,
     date: today,
     type: '',
     level: 0,
     exercises: [],
   })
 
+  const getUserInfo = async (): Promise<void> => {
+    try {
+      const info = await EncryptedStorage.getItem("user_session");
+      if (info !== null) {
+        const obj = await JSON.parse(info)
+        setUser(obj.username)
+        setWorkout({...workout, created_by: obj.username})
+      }
+    } catch(err) {
+        console.log(err)
+    }
+}
+
   const [createWorkout] = useMutation(CREATE_WORKOUT, {
     onError: (err) => console.log(JSON.stringify(err))
   })
 
   const addWorkout = (e: any): void => {
+    console.log(workout)
     createWorkout({variables: {
       input: workout
     }
@@ -69,7 +85,7 @@ export default function CreateWorkout ({navigation}: any) {
     for (const exercise of workout.exercises) {
       if (exercise.name === ex.name) return
     }
-    setWorkout({...workout, exercises: [...workout.exercises, {id: Number(ex.id), name: ex.name, weight: 0, sets: 0, reps: 0, equipment: ex.equipment}]})
+    setWorkout({...workout, exercises: [...workout.exercises, {name: ex.name, weight: 0, sets: 0, reps: 0, duration: 0, equipment: ex.equipment}]})
   }
 
   const toggleTypes = () => {
@@ -81,6 +97,10 @@ export default function CreateWorkout ({navigation}: any) {
   const searchExercises = () => {
     getExercise({variables: {name: searchString}})
   }
+
+  useEffect(() => {
+    getUserInfo()
+  }, [])
     
     return (
         <View>

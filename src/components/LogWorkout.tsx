@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, View, ListRenderItem, Button } from "react-native";
-import Workout from "./Workout";
 
 export default function LogWorkout ({route}: any) {
-    const [count, setCount] = useState(35)
-    const [intervalId, setIntervalId] = useState<any | null>(null)
     const {workout} = route.params
+    const [count, setCount] = useState(30)
+    const [intervalId, setIntervalId] = useState<any | null>(null)
+    console.log(workout.exercises)
 
-    let counter = 35
-
-    const countdown = () => {
+    const countdown = async () => {
+        for (const exercise of workout.exercises) {
+            setCount(exercise.duration)
+            let counter = exercise.duration
+            const newInterval = setInterval(() => {
+                if (counter === 0) return stop()
+                counter--
+                setCount(prev => prev - 1)
+            }, 1000)
+            setIntervalId(newInterval)
+        }
         if (intervalId) {
             clearInterval(intervalId)
             setIntervalId(null)
             return
         }
-        const newInterval = setInterval(() => {
-            if (counter === 0) return stop()
-            counter--
-            setCount(prev => prev - 1)
-        }, 1000)
-        setIntervalId(newInterval)
+        // const newInterval = setInterval(() => {
+        //     if (counter === 0) return stop()
+        //     counter--
+        //     setCount(prev => prev - 1)
+        // }, 1000)
+        // setIntervalId(newInterval)
     }
 
     const stop = () => {
