@@ -15,7 +15,8 @@ export interface ExerciseSearchString {
 export interface WorkoutExercise {
   name: string,
   weight: number,
-  duration: number;
+  work: number;
+  rest: number;
   sets: number,
   reps: number,
   equipment?: string[]

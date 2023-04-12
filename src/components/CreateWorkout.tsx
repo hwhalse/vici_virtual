@@ -11,7 +11,8 @@ type WorkoutExercise = {
   id?: number | string,
   name: string,
   weight: number | string,
-  duration: number;
+  work: number;
+  rest: number;
   sets: number | string,
   reps: number | string,
   equipment?: string[]
@@ -85,7 +86,7 @@ export default function CreateWorkout ({navigation}: any) {
     for (const exercise of workout.exercises) {
       if (exercise.name === ex.name) return
     }
-    setWorkout({...workout, exercises: [...workout.exercises, {name: ex.name, weight: 0, sets: 0, reps: 0, duration: 0, equipment: ex.equipment}]})
+    setWorkout({...workout, exercises: [...workout.exercises, {name: ex.name, weight: 0, sets: 0, reps: 0, work: 0, rest: 0, equipment: ex.equipment}]})
   }
 
   const toggleTypes = () => {

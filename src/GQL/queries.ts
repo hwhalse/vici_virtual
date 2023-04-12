@@ -21,6 +21,8 @@ query GetWorkoutsByAuthor($username: String!) {
       reps
       sets
       weight
+      work
+      rest
     },
     level
     type
