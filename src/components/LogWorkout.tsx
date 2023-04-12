@@ -19,11 +19,15 @@ export default function LogWorkout ({route}: any) {
     const breaks = 120;
 
     const countdown = () => {
-        console.log(times)
         if (running) return
         setRunning(true)
         let time = times[0]
         setCurrentExercise(order[0])
+        if (order[0] !== 'Ready' && order[0] !== 'rest' && order[0] !== 'break') {
+            const obj = results;
+            obj[order[0]] ? obj[order[0]].push(0) : obj[order[0]] = [0]
+            setResults(obj)
+        }
         setCount(time)
         let stopwatch = setInterval(() => {
             setIntervalId(stopwatch)
@@ -33,7 +37,7 @@ export default function LogWorkout ({route}: any) {
                 clearInterval(stopwatch); 
                 setRunning(false)
                 times.shift();
-                order.shift()
+                order.shift();
                 if (times.length > 0) {
                     countdown()
                 } else {
@@ -50,7 +54,7 @@ export default function LogWorkout ({route}: any) {
 
     const populateTimes = () => {
         for (const exercise of workout.exercises) {
-            for (let i = 0; i < exercise.sets + 1; i++) {
+            for (let i = 0; i < exercise.sets; i++) {
                 order.push(exercise.name)
                 order.push('rest')
                 times.push(exercise.work)
@@ -63,14 +67,13 @@ export default function LogWorkout ({route}: any) {
     }
 
     useEffect(() => {
-        const obj = results
-        for (const exercise of workout.exercises) {
-            obj[exercise.name] = []
-            for (let i = 0; i < exercise.sets + 1; i++) {
-                obj[exercise.name].push(0)
-            }
-        }
-        setResults(obj)
+        // const obj = results
+        // for (const exercise of workout.exercises) {
+        //     obj[exercise.name] = []
+        //     for (let i = 0; i < exercise.sets; i++) {
+        //         obj[exercise.name].push(0)
+        //     }
+        // }
         populateTimes()
     }, [])
     
@@ -81,7 +84,7 @@ export default function LogWorkout ({route}: any) {
             <Text>Current exercise: {currentExercise}</Text>
             <Button title="start workout" onPress={countdown}/>
             <Button title="stop" onPress={stop}/>
-            {Object.keys(results).length > 0 && <FlatList data={Object.entries(results)} keyExtractor={(item, index) => `${item[0]}, ${index}`} renderItem={({item}) => {console.log(item); let exerciseName = item[0]; return <View><Text>{item[0]}</Text><FlatList data={item[1]} keyExtractor={(item, index) => `${item}, ${index}`} renderItem={(data) => {console.log(data); return <View><Text>Set {data.index}</Text><TextInput placeholder="0" onChangeText={(text: string) => {
+            {Object.keys(results).length > 0 && <FlatList data={Object.entries(results)} extraData={results} keyExtractor={(item, index) => `${item[0]}, ${index}`} renderItem={({item}) => {console.log(item); let exerciseName = item[0]; return <View><Text>{item[0]}</Text><FlatList data={item[1]} keyExtractor={(item, index) => `${item}, ${index}`} renderItem={(data) => {console.log(results); return <View><Text>Set {data.index + 1}</Text><TextInput placeholder="0" onChangeText={(text: string) => {
                 const obj = results;
                 obj[exerciseName][data.index] = Number(text)
                 setResults(obj)
