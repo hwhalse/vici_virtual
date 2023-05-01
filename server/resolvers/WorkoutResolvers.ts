@@ -8,5 +8,8 @@ export const WorkoutResolvers = {
     },
     getWorkoutByAuthor: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<void | IWorkout> => {
         return Workout.findByUser(args)
-    }
+    },
+    uploadWorkout: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<void | IWorkout> => {
+        return Workout.upload(args)
+    },
 }

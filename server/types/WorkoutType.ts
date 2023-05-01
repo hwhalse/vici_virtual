@@ -8,3 +8,18 @@ export interface IWorkout {
     level: number;
     exercises: WorkoutExercise[];
 }
+
+export interface LogWorkoutInput {
+    username: string;
+    date: string;
+    location: string;
+    results: WorkoutStats[]
+}
+
+interface WorkoutStats {
+    name: string
+    result: {
+        reps: number[]
+        weight: number[]
+    }
+}

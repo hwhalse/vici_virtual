@@ -21,11 +21,35 @@ type Query {
 }
 
 type Mutation {
-  # User Mutations
   createUser(input: CreateUserInput!): User!
   updateUserById(input: UpdateUserInput): User!
   createExercise(input: CreateExerciseInput): Exercise!
   createWorkout(input: CreateWorkoutInput): Workout!
+  logWorkout(input: LogWorkoutInput): LogWorkoutResponse
+}
+
+input LogWorkoutInput {
+  username: String
+  date: String
+  location: String
+  results: [LogWorkoutResults]
+}
+
+input RepsWeight {
+  reps: [Int]
+  weight: [Int]
+}
+
+input LogWorkoutInput {
+  user: String
+  date: String
+  location: String
+  results: [LogWorkoutResults]
+}
+
+input LogWorkoutResults {
+  name: String
+  result: [RepsWeight]
 }
 
 input CreateUserInput {
@@ -75,6 +99,12 @@ type Equipment {
   name: String
 }
 
+type LogWorkoutResponse {
+  user: String
+  location: String
+  date: String
+}
+
 type Exercise {
   id: ID
   name: String
@@ -108,4 +138,17 @@ type Workout {
   date: String
   level: Int
   exercises: [WorkoutExercise]
+}
+
+type WorkoutResults {
+  author: String
+  location: String
+  date: String
+  workout: [WorkoutStats]
+}
+
+type WorkoutStats {
+  name: String
+  sets: Int
+  reps: Int
 }`;

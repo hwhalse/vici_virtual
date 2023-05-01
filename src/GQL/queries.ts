@@ -70,3 +70,10 @@ mutation CreateWorkout($input: CreateWorkoutInput) {
     name
   }
 }`
+
+export const LOG_WORKOUT = gql`
+mutation LogWorkout($input: LogWorkoutInput) {
+  logWorkout(input: $input) {
+    user
+  }
+}`

@@ -1,5 +1,5 @@
 import { pool } from '../server';
-import { IWorkout } from '../types/WorkoutType';
+import { IWorkout, LogWorkoutInput } from '../types/WorkoutType';
 
 export const Workout = {
     create: async (args: {input: IWorkout}): Promise<void | IWorkout> => {
@@ -19,5 +19,18 @@ export const Workout = {
         const data = await pool.query(query, values).then((data: any) => data.rows).catch((err: Error) => console.log(err));
         console.log(data);
         return data
+    },
+
+    upload: async (args: {input: LogWorkoutInput}): Promise<void | IWorkout> => {
+        const {username, results, location, date} = args.input;
+        const query = `INSERT INTO workout_log (workout_data, users, date, location) VALUES ($1, $2, $3, $4) RETURNING *`;
+        const values = [{data: results}, username, date, location]
+        try {
+            const data = await pool.query(query, values);
+            const resp = await data.rows[0];
+            console.log(resp)
+        } catch(err) {
+            console.log(err)
+        }
     }
 }

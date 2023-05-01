@@ -16,6 +16,7 @@ export const resolvers = {
     createUser: UserResolvers.createUser,
     updateUserById: UserResolvers.updateUserById,
     createExercise: ExerciseResolvers.createExercise,
-    createWorkout: WorkoutResolvers.createWorkout
+    createWorkout: WorkoutResolvers.createWorkout,
+    logWorkout: WorkoutResolvers.uploadWorkout,
   }
 };
