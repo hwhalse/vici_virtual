@@ -12,4 +12,7 @@ export const WorkoutResolvers = {
     uploadWorkout: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<void | IWorkout> => {
         return Workout.upload(args)
     },
+    getLoggedWorkouts: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<void | any[]> => {
+        return Workout.findLoggedWorkouts(args)
+    },
 }

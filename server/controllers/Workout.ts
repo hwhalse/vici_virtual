@@ -32,5 +32,21 @@ export const Workout = {
         } catch(err) {
             console.log(err)
         }
+    },
+
+    findLoggedWorkouts: async (args: {username: string}): Promise<void | any[]> => {
+        const username = args.username;
+        console.log(username)
+        const queryString = `SELECT * FROM workout_log WHERE users = $1 LIMIT 5`;
+        const values = [username];
+        try {
+            const query = await pool.query(queryString, values);
+            console.log(query)
+            const results = query.rows;
+            console.log(results[3].workout_data)
+            return results
+        } catch(err) {
+            console.log(err)
+        }
     }
 }

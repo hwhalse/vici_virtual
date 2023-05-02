@@ -53,6 +53,7 @@ export default function Home ({navigation, LogWorkout}: any) {
             <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
             <Text>Today's Date: {today}</Text>
             <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
+            <Button title="Logged Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
             <View style={{marginTop: 20, width: '100%', height: '100%'}}>
                 <Text style={{textDecorationLine: 'underline'}}>My Workouts:</Text>
                 {data && <FlatList data={data.getWorkoutsByAuthor} keyExtractor={(item, index) => `${index + 50}`} renderItem={({item}) => {console.log(item);return <WorkoutFeed workout={item} navigation={navigation} />}} />}

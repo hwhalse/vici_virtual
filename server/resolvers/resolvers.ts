@@ -11,6 +11,7 @@ export const resolvers = {
     getAllEquipment: EquipmentResolvers.getAllEquipment,
     getEquipmentByString: EquipmentResolvers.getEquipmentByString,
     getWorkoutsByAuthor: WorkoutResolvers.getWorkoutByAuthor,
+    getLoggedWorkouts: WorkoutResolvers.getLoggedWorkouts,
 },
   Mutation: {
     createUser: UserResolvers.createUser,

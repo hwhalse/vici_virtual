@@ -77,3 +77,21 @@ mutation LogWorkout($input: LogWorkoutInput) {
     user
   }
 }`
+
+export const GET_LOGGED_WORKOUTS = gql`
+query GetLoggedWorkouts($username: String!) {
+  getLoggedWorkouts(username: $username) {
+    users
+    date
+    location
+    workout_data {
+      data {
+        name
+        result {
+          reps
+          weight
+        }
+      }
+    } 
+  }
+}`

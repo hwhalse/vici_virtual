@@ -18,6 +18,7 @@ type Query {
   getAllEquipment: [Equipment!]
   getEquipmentByString(name: String!): [Equipment!]
   getWorkoutsByAuthor(username: String!): [Workout]
+  getLoggedWorkouts(username: String!): [LogWorkout]
 }
 
 type Mutation {
@@ -26,6 +27,27 @@ type Mutation {
   createExercise(input: CreateExerciseInput): Exercise!
   createWorkout(input: CreateWorkoutInput): Workout!
   logWorkout(input: LogWorkoutInput): LogWorkoutResponse
+}
+
+type LogWorkout {
+  users: String
+  date: String
+  location: String
+  workout_data: AllWorkouts
+}
+
+type AllWorkouts {
+  data: [LogWorkoutRes]
+}
+
+type LogWorkoutRes {
+  name: String
+  result: [RepsWeights]
+}
+
+type RepsWeights {
+  reps: [Int]
+  weight: [Int]
 }
 
 input LogWorkoutInput {
