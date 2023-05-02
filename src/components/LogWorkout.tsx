@@ -24,6 +24,7 @@ interface ExerciseReps {
 
 export default function LogWorkout ({route}: any) {
     const {workout} = route.params
+    console.log(workout)
     const times = [3]
     const order = ['Ready']
     const [count, setCount] = useState(times[0])
@@ -32,6 +33,7 @@ export default function LogWorkout ({route}: any) {
     const [currentExercise, setCurrentExercise] = useState(order[0])
     const [results, setResults] = useState<ExerciseReps[]>([])
     const [username, setUsername] = useState('')
+    const [timerMode, setTimerMode] = useState(true)
 
     const [logWorkout] = useMutation(LOG_WORKOUT, {
         onError: ((err: Error) => console.log(err))
@@ -142,14 +144,26 @@ export default function LogWorkout ({route}: any) {
         })
     }
 
+    const populateWorkout = () => {
+        const newArr = [...results];
+        for (const ex of workout.exercises) {
+            const repsAndWeight = new Array(ex.sets).fill(0)
+            newArr.push({name: ex.name, result: {reps: repsAndWeight, weight: repsAndWeight}})
+        }
+        setResults(newArr)
+    }
+
     useEffect(() => {
         populateTimes()
         getUserInfo()
-    }, [])
+        if (timerMode === false) populateWorkout()
+    }, [timerMode])
     
     return (
         <View>
-            <Text>Choose Workout: {workout.name}</Text>
+            {timerMode ?
+            <View>
+            <Text>Workout: {workout.name}</Text>
             <Text>Time: {count}</Text>
             <Text>Current exercise: {currentExercise}</Text>
             <Button title="start workout" onPress={countdown}/>
@@ -207,6 +221,41 @@ export default function LogWorkout ({route}: any) {
                     </View>)
                 }}/>
             }
+            </View>
+            :
+            <View>
+                <Text>Workout: {workout.name}</Text>
+                <FlatList data={workout.exercises} extraData={workout} keyExtractor={(item) => `${item.name}, ${item.reps}`} renderItem={({item, index}) => 
+                {
+                let exerciseName = item.name;
+                return (
+                <View>
+                    <Text>Exercise: {item.name}</Text>
+                    <FlatList data={new Array(item.sets).fill(0)} keyExtractor={(item, index) => `${item}, ${index}`} renderItem={({item, index}) => 
+                    <View>
+                        <Text>Set #{index + 1}</Text>
+                        <TextInput placeholder="Reps: 0" onChangeText={(text: string) => {
+                            const newArr = [...results];
+                            for (const ex of newArr) {
+                                if (ex.name === exerciseName) {
+                                    ex.result.reps[index] = Number(text)
+                                }
+                            }
+                        }}></TextInput>
+                        <TextInput placeholder="Weight: 0" onChangeText={(text: string) => {
+                            const newArr = [...results];
+                            for (const ex of newArr) {
+                                if (ex.name === exerciseName) {
+                                    ex.result.weight[index] = Number(text)
+                                }
+                            }
+                        }}></TextInput>
+                    </View>
+                    }/>
+                    <Button title="Add set" onPress={() => workout.exercises[index].sets = workout.exercises[index].sets + 1} />
+                </View>)}}/>
+            </View>}
+            <Button title="toggle timer" onPress={() => setTimerMode(!timerMode)}/>
             <Button title="Log workout" onPress={submitWorkout}/>
         </View>
     )
