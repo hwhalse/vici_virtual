@@ -4,8 +4,7 @@ import { EquipmentResolvers } from "./EquipmentResolvers";
 import { WorkoutResolvers } from "./WorkoutResolvers";
 export const resolvers = {
   Query: {
-    getAllUsers: UserResolvers.getAllUsers,
-    getUserById: UserResolvers.getUserById,
+    getUser: UserResolvers.findUser,
     getAllExercises: ExerciseResolvers.getAllExercises,
     getExerciseByName: ExerciseResolvers.getExerciseByName,
     getAllEquipment: EquipmentResolvers.getAllEquipment,
@@ -14,8 +13,6 @@ export const resolvers = {
     getLoggedWorkouts: WorkoutResolvers.getLoggedWorkouts,
 },
   Mutation: {
-    createUser: UserResolvers.createUser,
-    updateUserById: UserResolvers.updateUserById,
     createExercise: ExerciseResolvers.createExercise,
     createWorkout: WorkoutResolvers.createWorkout,
     logWorkout: WorkoutResolvers.uploadWorkout,

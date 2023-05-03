@@ -1,5 +1,19 @@
 import {gql} from '@apollo/client';
 
+export const GET_USER_INFO = gql`
+query GetUser($username: String!) {
+  getUser(username: $username) {
+    id
+    username
+    first_name
+    last_name
+    weight
+    height
+    age
+    gender
+  }
+}`
+
 export const GET_EXERCISES = gql`
 query Exercises {
   exercises {

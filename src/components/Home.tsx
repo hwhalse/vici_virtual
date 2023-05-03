@@ -1,9 +1,9 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { NavigationProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Button, Text, TextInput, View, FlatList } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
-import { GET_USER_WORKOUTS } from "../GQL/queries";
+import { GET_USER_INFO, GET_USER_WORKOUTS } from "../GQL/queries";
 import WorkoutFeed from "./WorkoutFeed";
 
 interface UserWorkouts {
@@ -11,12 +11,11 @@ interface UserWorkouts {
     created_by: string;
 }
 
-export default function Home ({navigation, LogWorkout}: any) {
+export default function Home ({navigation}: any) {
 
     const [username, setUsername] = useState({username: '', token: ''});
     const [today, setToday] = useState('')
-    
-    const { error, loading, data } = useQuery(GET_USER_WORKOUTS, {
+    const [getUser, {data, loading, error}] = useLazyQuery(GET_USER_INFO, {
         variables: {
             username: username.username
         }
@@ -41,6 +40,7 @@ export default function Home ({navigation, LogWorkout}: any) {
         } catch(err) {
             console.log(err)
         }
+        getUser()
     }
 
     useEffect(() => {
@@ -53,11 +53,17 @@ export default function Home ({navigation, LogWorkout}: any) {
             <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
             <Text>Today's Date: {today}</Text>
             <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
-            <Button title="Logged Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
-            <View style={{marginTop: 20, width: '100%', height: '100%'}}>
-                <Text style={{textDecorationLine: 'underline'}}>My Workouts:</Text>
-                {data && <FlatList data={data.getWorkoutsByAuthor} keyExtractor={(item, index) => `${index + 50}`} renderItem={({item}) => {console.log(item);return <WorkoutFeed workout={item} navigation={navigation} />}} />}
-            </View>
+            <Button title="Previous Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
+            <Button title="My Workouts" onPress={() => navigation.navigate('MyWorkouts', {navigation: navigation})}/>
+            {data && 
+            <View>
+                <Text>
+                    Hi: {data.getUser.first_name}
+                </Text>
+                <Text>
+                    weight: {data.getUser.weight}
+                </Text>
+            </View>}
         </View>
     )
 }

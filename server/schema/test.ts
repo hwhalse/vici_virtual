@@ -1,18 +1,18 @@
 export const typeDefs = `#graphql
 
 type User {
-  user_id: ID
+  id: ID
+  username: String!
   first_name: String!
   last_name: String!
-  email: String!
-  created_at: String!
-  updated_at: String!
+  weight: Int
+  height: String
+  age: Int
+  gender: String
 }
 
 type Query {
-  # User Queries
-  getAllUsers: [User!]
-  getUserById(user_id:ID!): User!
+  getUser(username: String!): User!
   getAllExercises: [Exercise!]
   getExerciseByName(name: String!): [Exercise!]
   getAllEquipment: [Equipment!]
@@ -22,8 +22,6 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User!
-  updateUserById(input: UpdateUserInput): User!
   createExercise(input: CreateExerciseInput): Exercise!
   createWorkout(input: CreateWorkoutInput): Workout!
   logWorkout(input: LogWorkoutInput): LogWorkoutResponse
