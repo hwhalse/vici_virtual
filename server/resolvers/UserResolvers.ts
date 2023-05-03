@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../controllers/User';
-import { IUser } from '../types/UserType';
+import { IUser, UserStats } from '../types/UserType';
 
 /**
  * schema
@@ -11,8 +11,12 @@ import { IUser } from '../types/UserType';
  */
 export const UserResolvers = {
 
-     findUser: async (parent:any, args:any, ctx:{req:Request,res:Response}, info:any): Promise<void | IUser> => {
+    findUser: async (parent:any, args:any, ctx:{req:Request,res:Response}, info:any): Promise<void | IUser> => {
         return User.findByUsername(args);
+    },
+
+    updateStats: async (parent:any, args:any, ctx:{req:Request,res:Response}, info:any): Promise<void | UserStats> => {
+        return User.updateStats(args);
     },
 
 }

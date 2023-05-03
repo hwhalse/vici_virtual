@@ -3,12 +3,16 @@ export const typeDefs = `#graphql
 type User {
   id: ID
   username: String!
-  first_name: String!
-  last_name: String!
+  first_name: String
+  last_name: String
+  email: String
   weight: Int
   height: String
-  age: Int
+  birth_date: String
   gender: String
+  date: String
+  bodyfat: Int
+  muscle_mass: Int
 }
 
 type Query {
@@ -25,6 +29,23 @@ type Mutation {
   createExercise(input: CreateExerciseInput): Exercise!
   createWorkout(input: CreateWorkoutInput): Workout!
   logWorkout(input: LogWorkoutInput): LogWorkoutResponse
+  updateStats(input: UserStatsInput): Stats
+}
+
+input UserStatsInput {
+  id: Int
+  date: String
+  weight: Int
+  bodyfat: Int
+  muscleMass: Int
+}
+
+type Stats {
+  id: Int
+  date: String
+  weight: Int
+  bodyfat: Int
+  muscleMass: Int
 }
 
 type LogWorkout {

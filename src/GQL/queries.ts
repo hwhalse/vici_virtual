@@ -7,10 +7,25 @@ query GetUser($username: String!) {
     username
     first_name
     last_name
+    email
     weight
     height
-    age
+    birth_date
     gender
+    date
+    bodyfat
+    muscle_mass
+  }
+}`
+
+export const UPDATE_USER_STATS = gql`
+mutation UpdateStats($input: UserStatsInput) {
+  updateStats(input: $input) {
+    id
+    date
+    weight
+    bodyfat
+    muscleMass
   }
 }`
 

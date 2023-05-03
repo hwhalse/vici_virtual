@@ -55,15 +55,7 @@ export default function Home ({navigation}: any) {
             <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
             <Button title="Previous Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
             <Button title="My Workouts" onPress={() => navigation.navigate('MyWorkouts', {navigation: navigation})}/>
-            {data && 
-            <View>
-                <Text>
-                    Hi: {data.getUser.first_name}
-                </Text>
-                <Text>
-                    weight: {data.getUser.weight}
-                </Text>
-            </View>}
+            <Button title="My Stats" onPress={() => navigation.navigate('MyStats', {navigation: navigation})}/>
         </View>
     )
 }

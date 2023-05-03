@@ -8,3 +8,11 @@ export interface IUser  {
     created_at: string;
     updated_at: string;
 }
+
+export interface UserStats {
+    id: number;
+    date: string;
+    weight: number;
+    bodyfat: number;
+    muscleMass: number;
+}

@@ -16,5 +16,6 @@ export const resolvers = {
     createExercise: ExerciseResolvers.createExercise,
     createWorkout: WorkoutResolvers.createWorkout,
     logWorkout: WorkoutResolvers.uploadWorkout,
+    updateStats: UserResolvers.updateStats,
   }
 };
