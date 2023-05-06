@@ -1,5 +1,5 @@
 import { pool } from "../server";
-import { IUser } from "../types/UserType";
+import { IUser, UserStats } from "../types/UserType";
 
 
 export const User =  {
@@ -10,13 +10,15 @@ export const User =  {
         try {
             const query = await pool.query(queryString, values)
             const data = query.rows[0];
+            data.birth_date = JSON.stringify(data.birth_date)
+            data.date = JSON.stringify(data.date)
             return data
         } catch(err) {
             console.log(err)
         }
     },
 
-    updateStats: async (args: {input: UpdateStats}): Promise<void | UpdateStats> => {
+    updateStats: async (args: {input: UserStats}): Promise<void | UserStats> => {
         const {id, date, weight, bodyfat, muscleMass} = args.input;
         const queryString = `INSERT INTO user_stats (user_id, date, weight, bodyfat, muscle_mass) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
         const values = [id, date, weight, bodyfat, muscleMass];
@@ -28,12 +30,4 @@ export const User =  {
             console.log(err)
         }
     }
-}
-
-interface UpdateStats {
-    id: number;
-    date: string;
-    weight: number;
-    bodyfat: number;
-    muscleMass: number;
 }

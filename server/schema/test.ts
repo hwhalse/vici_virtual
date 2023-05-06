@@ -23,6 +23,7 @@ type Query {
   getEquipmentByString(name: String!): [Equipment!]
   getWorkoutsByAuthor(username: String!): [Workout]
   getLoggedWorkouts(username: String!): [LogWorkout]
+  getUserFeed(id: Int!): [LogWorkout]
 }
 
 type Mutation {
@@ -49,7 +50,8 @@ type Stats {
 }
 
 type LogWorkout {
-  users: String
+  id: Int
+  author_id: Int
   date: String
   location: String
   workout_data: AllWorkouts

@@ -5,9 +5,7 @@ import { GET_USER_WORKOUTS } from "../GQL/queries";
 import EncryptedStorage from "react-native-encrypted-storage";
 import WorkoutFeed from "./WorkoutFeed";
 
-export default function MyWorkouts (props: any) {
-
-    console.log(props)
+export default function MyWorkouts ({navigation}: any) {
 
     const [username, setUsername] = useState('')
 
@@ -41,7 +39,7 @@ export default function MyWorkouts (props: any) {
             </Text>
             <View style={{marginTop: 20, width: '100%', height: '100%'}}>
                 <Text style={{textDecorationLine: 'underline'}}>My Workouts:</Text>
-                {data && <FlatList data={data.getWorkoutsByAuthor} keyExtractor={(item, index) => `${index + 50}`} renderItem={({item}) => {console.log(item);return <WorkoutFeed workout={item} navigation={props.navigation} />}} />}
+                {data && <FlatList data={data.getWorkoutsByAuthor} keyExtractor={(item, index) => `${index + 50}`} renderItem={({item}) => {console.log(item);return <WorkoutFeed workout={item} navigation={navigation} />}} />}
             </View>
         </View>
     )

@@ -39,9 +39,30 @@ export default function MyStats () {
         getUser()
     }
 
+    const getRMR = () => {
+        if (!data.getUser) return 0
+        console.log(data.getUser.birth_date.slice(1, 11))
+        const today = new Date().toISOString().slice(0, 10)
+        console.log(today)
+        const height = data.getUser.height;
+        const weight = data.getUser.weight / 2.2;
+        const gender = data.getUser.gender;
+        if (gender === 'Male') {
+            return Math.floor((10 * weight) + (6.25 * height) - (5 * 30))
+        } else if (gender === 'Female') {
+            return Math.floor((10 * weight) + (6.25 * height) - (5 * 30) - 161)
+        }
+    }
+
     const update = () => {
         updateUser({variables: {
-            input: userStats
+            input: {
+                id: userStats.id,
+                date: new Date().getUTCDate(),
+                weight: userStats.weight === 0 ? data.getUser.weight : userStats.weight,
+                bodyfat: userStats.bodyfat === 0 ? data.getUser.bodyfat : userStats.bodyfat,
+                muscleMass: userStats.muscleMass === 0 ? data.getUser.muscle_mass : userStats.muscleMass
+            }
         }})
     }
 
@@ -54,10 +75,11 @@ export default function MyStats () {
             {data && data.getUser && 
             <View>
                 <Text>Hi {data.getUser.first_name}</Text>
-                <Text>Height {data.getUser.height}</Text>
-                <Text>Weight {data.getUser.weight}</Text>
-                <Text>Body Fat {data.getUser.bodyfat}</Text>
-                <Text>Muscle Mass {data.getUser.muscle_mass}</Text>
+                <Text>Height: {data.getUser.height}</Text>
+                <Text>Weight: {data.getUser.weight}</Text>
+                <Text>Bodyfat: {data.getUser.bodyfat}</Text>
+                <Text>Muscle Mass: {data.getUser.muscle_mass}</Text>
+                <Text>Resting Metabolic Rate: {getRMR()}</Text>
             </View>
             }
             <View>
@@ -67,7 +89,7 @@ export default function MyStats () {
                 <TextInput placeholder="Weight" onChangeText={(text: string) => setUserStats({...userStats, weight: Number(text)})}>Weight: </TextInput>
                 <TextInput placeholder="Body Fat" onChangeText={(text: string) => setUserStats({...userStats, bodyfat: Number(text)})}>Body Fat: </TextInput>
                 <TextInput placeholder="Muscle Mass" onChangeText={(text: string) => setUserStats({...userStats, muscleMass: Number(text)})}>Muscle Mass: </TextInput>
-                <Button title="Update" onPress={() => updateUser()} />
+                <Button title="Update" onPress={() => update()} />
             </View>
         </View>
     )

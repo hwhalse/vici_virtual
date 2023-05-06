@@ -124,3 +124,21 @@ query GetLoggedWorkouts($username: String!) {
     } 
   }
 }`
+
+export const GET_USER_FEED = gql`
+query GetUserFeed($id: Int!) {
+  getUserFeed(id: $id) {
+    author_id
+    date
+    location
+    workout_data {
+      data {
+        name
+        result {
+          reps
+          weight
+        }
+      }
+    }
+  }
+}`

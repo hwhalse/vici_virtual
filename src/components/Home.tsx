@@ -1,15 +1,9 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { NavigationProp } from "@react-navigation/native";
+import { useLazyQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
-import { Button, Text, TextInput, View, FlatList } from "react-native";
+import { Button, Text, View } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
-import { GET_USER_INFO, GET_USER_WORKOUTS } from "../GQL/queries";
-import WorkoutFeed from "./WorkoutFeed";
-
-interface UserWorkouts {
-    name: string;
-    created_by: string;
-}
+import { GET_USER_INFO } from "../GQL/queries";
+import MainFeed from "./MainFeed";
 
 export default function Home ({navigation}: any) {
 
@@ -21,7 +15,7 @@ export default function Home ({navigation}: any) {
         }
     })
 
-    console.log(username.username)
+    console.log(data)
 
     const todayDate = (): void => {
       const now = new Date();
@@ -53,9 +47,11 @@ export default function Home ({navigation}: any) {
             <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
             <Text>Today's Date: {today}</Text>
             <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
-            <Button title="Previous Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
-            <Button title="My Workouts" onPress={() => navigation.navigate('MyWorkouts', {navigation: navigation})}/>
-            <Button title="My Stats" onPress={() => navigation.navigate('MyStats', {navigation: navigation})}/>
+            <Button title="My Previous Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
+            <Button title="My Saved Workouts" onPress={() => navigation.navigate('MyWorkouts', {navigation: navigation})}/>
+            <Button title="My Stats" onPress={() => navigation.navigate('MyStats')}/>
+            <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
+            {data && <MainFeed userData={data.getUser}/>}
         </View>
     )
 }
