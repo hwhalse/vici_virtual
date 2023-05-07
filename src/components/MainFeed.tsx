@@ -2,19 +2,18 @@ import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import { GET_USER_FEED } from "../GQL/queries";
+import { FlatList } from "react-native-gesture-handler";
+import MainFeedItem from "./MainFeedItem";
 
 export default function MainFeed ({userData}: any) {
 
-    console.log(userData.id)
-
-    const {data, loading, error} = useQuery(GET_USER_FEED, {variables: {id: userData.id}})
+    const {loading, error, data} = useQuery(GET_USER_FEED, {variables: {id: Number(userData.id)}})
 
     return (
         <View>
-            <Text>
-                Hi
-            </Text>
-            {data && <Text>{data.getUserFeed.id}</Text>}
+            {data && 
+            <FlatList data={data.getUserFeed} keyExtractor={((item, index) => `${item.author_id}, ${index}`)} renderItem={(({item}) => <MainFeedItem workout={item} />)} /> 
+            }
         </View>
     )
 }

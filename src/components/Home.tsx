@@ -15,8 +15,6 @@ export default function Home ({navigation}: any) {
         }
     })
 
-    console.log(data)
-
     const todayDate = (): void => {
       const now = new Date();
       const dateString = now.toLocaleDateString()
