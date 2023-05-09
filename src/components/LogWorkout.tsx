@@ -134,9 +134,11 @@ export default function LogWorkout ({route}: any) {
     const submitWorkout = () => {
         console.log(results)
         const input = {
+            name: '',
             results: results,
             username: username,
             location: 'gym',
+            priv: true,
             date: new Date().toISOString()
         }
         console.log('submitting log workout input', input)

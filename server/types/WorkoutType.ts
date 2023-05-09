@@ -13,6 +13,7 @@ export interface LogWorkoutInput {
     username: string;
     date: string;
     location: string;
+    priv: boolean;
     results: WorkoutStats[]
 }
 

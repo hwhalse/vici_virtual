@@ -52,8 +52,10 @@ type Stats {
 type LogWorkout {
   id: Int
   author_id: Int
+  name: String
   date: String
   location: String
+  author_name: String
   workout_data: AllWorkouts
 }
 
@@ -72,9 +74,11 @@ type RepsWeights {
 }
 
 input LogWorkoutInput {
+  name: String
   username: String
   date: String
   location: String
+  priv: Boolean
   results: [LogWorkoutResults]
 }
 

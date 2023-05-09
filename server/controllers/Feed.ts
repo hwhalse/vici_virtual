@@ -2,11 +2,18 @@ import { pool } from "../server";
 
 export const Feed = {
     getUserFeed: async (args: {id: number}): Promise<any> => {
-        const queryString = `SELECT * FROM workout_log 
-        WHERE author_id = 
+        console.log(args.id)
+        const queryString = `
+        SELECT w.*, u.username 
+        AS author_name 
+        FROM workout_log w 
+        INNER JOIN users u 
+        ON u.id = w.author_id
+        WHERE w.author_id = 
             (SELECT following FROM following 
             WHERE follower = $1)
-        ORDER BY date DESC 
+        AND w.private = false
+        ORDER BY w.date DESC 
         LIMIT 10`;
         const values = [args.id];
         try {
@@ -16,5 +23,5 @@ export const Feed = {
         } catch(err) {
             console.log(err)
         }
-    }
+    },
 }

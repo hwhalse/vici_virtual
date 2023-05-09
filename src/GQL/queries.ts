@@ -131,6 +131,8 @@ query GetUserFeed($id: Int!) {
     author_id
     date
     location
+    author_name
+    name
     workout_data {
       data {
         name
