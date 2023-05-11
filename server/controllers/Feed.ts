@@ -25,6 +25,19 @@ export const Feed = {
         }
     },
 
+    getSavedWorkoutIDs: async (args: {id: number}): Promise<any> => {
+        const id = args.id;
+        const queryString = `SELECT workout_id FROM users_saved_workouts WHERE user_id = $1`;
+        const values = [id];
+        try {
+            const data = await pool.query(queryString, values);
+            console.log(data.rows)
+            return data.rows;
+        } catch(err) {
+            console.log(err)
+        }
+    },
+
     saveWorkout: async (args: {input: any}): Promise<any> => {
         const {user_id, workout_id} = args.input;
         const queryString = `INSERT INTO users_saved_workouts (user_id, workout_id) values ($1, $2) RETURNING *`;

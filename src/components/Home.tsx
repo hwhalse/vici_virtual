@@ -49,7 +49,7 @@ export default function Home ({navigation}: any) {
             <Button title="My Saved Workouts" onPress={() => navigation.navigate('MyWorkouts', {navigation: navigation})}/>
             <Button title="My Stats" onPress={() => navigation.navigate('MyStats')}/>
             <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
-            {data && <MainFeed userData={data.getUser}/>}
+            {data && <MainFeed navigation={navigation} userData={data.getUser}/>}
         </View>
     )
 }

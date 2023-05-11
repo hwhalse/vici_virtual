@@ -13,6 +13,8 @@ export const resolvers = {
     getWorkoutsByAuthor: WorkoutResolvers.getWorkoutByAuthor,
     getLoggedWorkouts: WorkoutResolvers.getLoggedWorkouts,
     getUserFeed: FeedResolvers.getUserFeed,
+    getWorkoutIds: FeedResolvers.getWorkoutIds,
+    getWorkoutById: WorkoutResolvers.getWorkoutById,
 },
   Mutation: {
     createExercise: ExerciseResolvers.createExercise,

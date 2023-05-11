@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import LoggedWorkoutExercises from "./LoggedWorkoutExercises";
-import { useMutation } from "@apollo/client";
-import { CREATE_WORKOUT, SAVE_WORKOUT } from "../GQL/queries";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import { GET_WORKOUT_BY_ID, SAVE_WORKOUT } from "../GQL/queries";
 
-export default function MainFeedItem ({workout}: any) {
+export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
+
+    const [saveable, setSaveable] = useState(false)
+
     const day = new Date(workout.date.slice(1, -1)).toDateString()
-    console.log(workout)
-    const [saveWorkout] = useMutation(SAVE_WORKOUT)
+
+    const [getWorkout] = useLazyQuery(GET_WORKOUT_BY_ID, {variables: {id: workout.workout_id}})
+    
+    const [saveWorkout] = useMutation(SAVE_WORKOUT, {
+        onError: (error) => console.log(error)
+    })
+
+    const canSave = () => {
+        for (const id of workoutIds) {
+            console.log(id)
+            if (id.workout_id === workout.workout_id) return
+        }
+        setSaveable(true)
+    }
+
+    useEffect(() => {
+        canSave()
+    }, [])
+
     const save = () => {
         saveWorkout({
             variables: {
@@ -18,6 +38,12 @@ export default function MainFeedItem ({workout}: any) {
             }
         })
     }
+
+    const log = async () => {
+        const query = await getWorkout()
+        await navigation.navigate('LogWorkout', {workout: query.data.getWorkoutById})
+    }
+
     return (
         <View style={{borderColor: 'pink', borderWidth: 2, width: 350, marginTop: 5}}>
             <Text>
@@ -33,7 +59,10 @@ export default function MainFeedItem ({workout}: any) {
                 Workout: {workout.name}
             </Text>}
             <FlatList data={workout.workout_data.data} keyExtractor={(item: any, index: number) => `${item.name}, ${index}`} renderItem={(({item}: any) => <LoggedWorkoutExercises list={item}/>)} />
-            <Button title="Save to my workouts" onPress={save} />
+            <View>
+              <Button title="Log this workout" onPress={log}/>
+              {saveable && <Button title="Save to my workouts" onPress={save} />}
+            </View>
         </View>
     )
 }

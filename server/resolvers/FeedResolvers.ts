@@ -8,4 +8,7 @@ export const FeedResolvers = {
     saveWorkout: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<any> => {
         return await Feed.saveWorkout(args)
     },
+    getWorkoutIds: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<any> => {
+        return await Feed.getSavedWorkoutIDs(args)
+    },
 }

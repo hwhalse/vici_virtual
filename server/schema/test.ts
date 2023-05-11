@@ -24,6 +24,12 @@ type Query {
   getWorkoutsByAuthor(id: Int!): [Workout]
   getLoggedWorkouts(username: String!): [LogWorkout]
   getUserFeed(id: Int!): [LogWorkout]
+  getWorkoutIds(id: Int!): [WorkoutIds]
+  getWorkoutById(id: Int!): Workout
+}
+
+type WorkoutIds {
+  workout_id: Int
 }
 
 type Mutation {

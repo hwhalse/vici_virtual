@@ -32,6 +32,18 @@ export const Workout = {
 
     },
 
+    findById: async (args: {id: number}): Promise<any> => {
+        const id = args.id;
+        const queryString = `SELECT * from workouts WHERE id = $1`;
+        const values = [id];
+        try {
+            const data = await pool.query(queryString, values);
+            return data.rows[0]
+        } catch(err) {
+            console.log(err)
+        }
+    },
+
     upload: async (args: {input: LogWorkoutInput}): Promise<void | IWorkout> => {
         const {workout_id, user_id, results, location, date, priv} = args.input;
         const query = `

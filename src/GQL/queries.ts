@@ -147,3 +147,28 @@ export const SAVE_WORKOUT = gql`
 mutation SaveWorkout($input: SaveWorkoutInput) {
   saveWorkout(input: $input)
 }`
+
+export const GET_WORKOUT_IDS = gql`
+query GetWorkoutIds($id: Int!) {
+  getWorkoutIds(id: $id) {
+    workout_id
+  }
+}`
+
+export const GET_WORKOUT_BY_ID = gql`
+query GetWorkoutById($id: Int!) {
+  getWorkoutById(id: $id) {
+    id
+    name
+    type
+    creator_id
+    created_date
+    level
+    exercises {
+      name
+      reps
+      rest
+      equipment
+    }
+  }
+}`

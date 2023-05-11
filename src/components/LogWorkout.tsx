@@ -24,7 +24,6 @@ interface ExerciseReps {
 
 export default function LogWorkout ({route}: any) {
     const {workout} = route.params
-    console.log(workout)
     let times = [3]
     let order = ['Ready']
     const [count, setCount] = useState(times[0])

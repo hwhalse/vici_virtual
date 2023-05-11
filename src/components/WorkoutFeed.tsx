@@ -25,7 +25,7 @@ export default function WorkoutFeed ({workout, navigation}: any) {
             <Text>Name: {workout.name}</Text>
             <Text>Type: {workout.type}</Text>
             <Text>Level: {workout.level}</Text>
-            <Text>Created By: {workout.created_by}</Text>
+            <Text>Created By: {workout.creator_id}</Text>
             <FlatList data={workout.exercises} keyExtractor={(item, index) => `${index + 60}`} renderItem={({item}) => <ExerciseList exercise={item} />} />
             <Button title="Log workout" onPress={() => navigation.navigate('LogWorkout', {workout: workout})} />
         </View>
