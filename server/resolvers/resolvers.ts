@@ -19,5 +19,6 @@ export const resolvers = {
     createWorkout: WorkoutResolvers.createWorkout,
     logWorkout: WorkoutResolvers.uploadWorkout,
     updateStats: UserResolvers.updateStats,
+    saveWorkout: FeedResolvers.saveWorkout,
   }
 };

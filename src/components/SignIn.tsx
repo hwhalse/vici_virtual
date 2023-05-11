@@ -9,7 +9,7 @@ export default function SignIn () {
             "user_session",
             JSON.stringify({
                 username: 'test',
-                token: "123"
+                id: 1
             })
         )
       } catch(err) {

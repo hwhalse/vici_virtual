@@ -12,19 +12,32 @@ export const Workout = {
         return data
     },
 
-    findByUser: async (args: {username: string}): Promise<void | IWorkout> => {
-        const username = args.username
-        const query = `SELECT * FROM workout WHERE created_by = $1`;
-        const values = [username];
-        const data = await pool.query(query, values).then((data: any) => data.rows).catch((err: Error) => console.log(err));
-        console.log(data);
-        return data
+    findByUser: async (args: {id: number}): Promise<void | IWorkout[]> => {
+        console.log(args)
+        const id = args.id
+        const queryString = `
+        SELECT w.* FROM users_saved_workouts s 
+        INNER JOIN workouts w 
+        ON s.workout_id = w.id 
+        WHERE s.user_id = $1`;
+        const values = [id];
+        try {
+            const data = await pool.query(queryString, values);
+            data.rows[0].created_date = JSON.stringify(data.rows[0].created_date)
+            console.log(data.rows[0].exercises[0].equipment)
+            return data.rows
+        } catch(err) {
+            console.log(err)
+        }
+
     },
 
     upload: async (args: {input: LogWorkoutInput}): Promise<void | IWorkout> => {
-        const {username, results, location, date} = args.input;
-        const query = `INSERT INTO workout_log (workout_data, users, date, location) VALUES ($1, $2, $3, $4) RETURNING *`;
-        const values = [{data: results}, username, date, location]
+        const {workout_id, user_id, results, location, date, priv} = args.input;
+        const query = `
+        INSERT INTO workout_log (workout_id, workout_data, user_id, date, location, private) 
+        VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+        const values = [workout_id, {data: results}, user_id, date, location, priv]
         try {
             const data = await pool.query(query, values);
             const resp = await data.rows[0];

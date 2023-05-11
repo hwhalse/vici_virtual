@@ -11,9 +11,11 @@ export default function MyWorkouts ({navigation}: any) {
 
     const { error, loading, data } = useQuery(GET_USER_WORKOUTS, {
         variables: {
-            username: username
+            id: 1
         }
     })
+
+    console.log(data)
 
     const getUserInfo = async (): Promise<void> => {
         try {

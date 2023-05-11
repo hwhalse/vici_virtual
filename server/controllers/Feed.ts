@@ -8,8 +8,8 @@ export const Feed = {
         AS author_name 
         FROM workout_log w 
         INNER JOIN users u 
-        ON u.id = w.author_id
-        WHERE w.author_id = 
+        ON u.id = w.user_id
+        WHERE w.user_id = 
             (SELECT following FROM following 
             WHERE follower = $1)
         AND w.private = false
@@ -22,6 +22,18 @@ export const Feed = {
             return query.rows
         } catch(err) {
             console.log(err)
+        }
+    },
+
+    saveWorkout: async (args: {input: any}): Promise<any> => {
+        const {user_id, workout_id} = args.input;
+        const queryString = `INSERT INTO users_saved_workouts (user_id, workout_id) values ($1, $2) RETURNING *`;
+        const values = [user_id, workout_id];
+        try {
+            const data = await pool.query(queryString, values);
+            return data.rows[0]
+        } catch(arr) {
+            console.log(arr)
         }
     },
 }

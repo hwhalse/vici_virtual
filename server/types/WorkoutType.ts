@@ -10,7 +10,8 @@ export interface IWorkout {
 }
 
 export interface LogWorkoutInput {
-    username: string;
+    workout_id: number;
+    user_id: string;
     date: string;
     location: string;
     priv: boolean;

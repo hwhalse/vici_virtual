@@ -2,19 +2,19 @@ import React from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import LoggedWorkoutExercises from "./LoggedWorkoutExercises";
 import { useMutation } from "@apollo/client";
-import { CREATE_WORKOUT } from "../GQL/queries";
+import { CREATE_WORKOUT, SAVE_WORKOUT } from "../GQL/queries";
 
 export default function MainFeedItem ({workout}: any) {
     const day = new Date(workout.date.slice(1, -1)).toDateString()
     console.log(workout)
-    const [saveWorkout] = useMutation(CREATE_WORKOUT)
+    const [saveWorkout] = useMutation(SAVE_WORKOUT)
     const save = () => {
-        const input = {
-            name: workout.name ? workout.name : null,
-        }
         saveWorkout({
             variables: {
-                input: input
+                input: {
+                user_id: 1,
+                workout_id: workout.workout_id
+              }
             }
         })
     }

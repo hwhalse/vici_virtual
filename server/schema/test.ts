@@ -21,7 +21,7 @@ type Query {
   getExerciseByName(name: String!): [Exercise!]
   getAllEquipment: [Equipment!]
   getEquipmentByString(name: String!): [Equipment!]
-  getWorkoutsByAuthor(username: String!): [Workout]
+  getWorkoutsByAuthor(id: Int!): [Workout]
   getLoggedWorkouts(username: String!): [LogWorkout]
   getUserFeed(id: Int!): [LogWorkout]
 }
@@ -31,6 +31,12 @@ type Mutation {
   createWorkout(input: CreateWorkoutInput): Workout!
   logWorkout(input: LogWorkoutInput): LogWorkoutResponse
   updateStats(input: UserStatsInput): Stats
+  saveWorkout(input: SaveWorkoutInput): String
+}
+
+input SaveWorkoutInput {
+  user_id: Int
+  workout_id: Int
 }
 
 input UserStatsInput {
@@ -51,11 +57,11 @@ type Stats {
 
 type LogWorkout {
   id: Int
-  author_id: Int
-  name: String
+  user_id: Int
   date: String
-  location: String
   author_name: String
+  location: String
+  workout_id: Int
   workout_data: AllWorkouts
 }
 
@@ -74,8 +80,8 @@ type RepsWeights {
 }
 
 input LogWorkoutInput {
-  name: String
-  username: String
+  workout_id: Int
+  author_id: Int
   date: String
   location: String
   priv: Boolean
@@ -169,7 +175,7 @@ type WorkoutExercise {
   rest: Int
   sets: Int
   reps: Int
-  equipment: [Equipment]
+  equipment: [String]
 }
 
 type Query {
@@ -179,10 +185,11 @@ type Query {
 }
 
 type Workout {
+  id: Int
   name: String
   type: String
-  created_by: String
-  date: String
+  creator_id: Int
+  created_date: String
   level: Int
   exercises: [WorkoutExercise]
 }

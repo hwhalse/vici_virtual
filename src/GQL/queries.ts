@@ -37,24 +37,22 @@ query Exercises {
 }`
 
 export const GET_USER_WORKOUTS = gql`
-query GetWorkoutsByAuthor($username: String!) {
-  getWorkoutsByAuthor(username: $username) {
+query GetWorkoutsByAuthor($id: Int!) {
+  getWorkoutsByAuthor(id: $id) {
+    id
     name
-    created_by
-    date
-    exercises {
-      equipment {
-        name
-      },
-      name
-      reps
-      sets
-      weight
-      work
-      rest
-    },
-    level
     type
+    creator_id
+    created_date
+    level
+    exercises {
+      name
+      sets
+      reps
+      rest
+      weight
+      equipment
+    }
   }
 }`
 
@@ -128,11 +126,11 @@ query GetLoggedWorkouts($username: String!) {
 export const GET_USER_FEED = gql`
 query GetUserFeed($id: Int!) {
   getUserFeed(id: $id) {
-    author_id
+    user_id
     date
     location
     author_name
-    name
+    workout_id
     workout_data {
       data {
         name
@@ -143,4 +141,9 @@ query GetUserFeed($id: Int!) {
       }
     }
   }
+}`
+
+export const SAVE_WORKOUT = gql`
+mutation SaveWorkout($input: SaveWorkoutInput) {
+  saveWorkout(input: $input)
 }`

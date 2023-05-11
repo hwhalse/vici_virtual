@@ -24,6 +24,7 @@ interface ExerciseReps {
 
 export default function LogWorkout ({route}: any) {
     const {workout} = route.params
+    console.log(workout)
     let times = [3]
     let order = ['Ready']
     const [count, setCount] = useState(times[0])
@@ -134,9 +135,9 @@ export default function LogWorkout ({route}: any) {
     const submitWorkout = () => {
         console.log(results)
         const input = {
-            name: '',
+            workout_id: workout.id,
             results: results,
-            username: username,
+            user_id: 1,
             location: 'gym',
             priv: true,
             date: new Date().toISOString()
