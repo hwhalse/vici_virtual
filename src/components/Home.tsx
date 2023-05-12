@@ -43,12 +43,12 @@ export default function Home ({navigation}: any) {
     return (
         <View style={{height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
             <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
-            <Text>Today's Date: {today}</Text>
             <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
             <Button title="My Previous Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
             <Button title="My Saved Workouts" onPress={() => navigation.navigate('MyWorkouts', {navigation: navigation})}/>
             <Button title="My Stats" onPress={() => navigation.navigate('MyStats')}/>
             <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
+            <Button title="Find Friends" onPress={() => navigation.navigate('SearchUsers', {navigation: navigation})}/>
             {data && <MainFeed navigation={navigation} userData={data.getUser}/>}
         </View>
     )

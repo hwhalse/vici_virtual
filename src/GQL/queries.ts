@@ -172,3 +172,14 @@ query GetWorkoutById($id: Int!) {
     }
   }
 }`
+
+export const SEARCH_FOR_FRIENDS = gql`
+query FindFriends($searchString: String) {
+  findFriends(searchString: $searchString) {
+    id
+    username
+    first_name
+    last_name
+    birth_date
+  }
+}`

@@ -19,4 +19,8 @@ export const UserResolvers = {
         return User.updateStats(args);
     },
 
+    findFriends: async (parent:any, args:any, ctx:{req:Request,res:Response}, info:any): Promise<void | UserStats> => {
+        return User.findFriends(args);
+    },
+
 }

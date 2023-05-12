@@ -26,6 +26,7 @@ type Query {
   getUserFeed(id: Int!): [LogWorkout]
   getWorkoutIds(id: Int!): [WorkoutIds]
   getWorkoutById(id: Int!): Workout
+  findFriends(searchString: String): [User]
 }
 
 type WorkoutIds {

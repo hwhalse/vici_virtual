@@ -39,6 +39,7 @@ import LoggedWorkouts from './components/LoggedWorkouts';
 import MyWorkouts from './components/MyWorkouts';
 import MyStats from './components/MyStats';
 import MyFriends from './components/MyFriends';
+import SearchUsers from './components/SearchUsers';
 
 
 type SectionProps = PropsWithChildren<{
@@ -112,6 +113,7 @@ function App(): JSX.Element {
             <Stack.Screen name="MyWorkouts" component={MyWorkouts} options={{title: "My Workouts"}}/>
             <Stack.Screen name='MyStats' component={MyStats} options={{title: "My Stats"}}/>
             <Stack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
+            <Stack.Screen name='SearchUsers' component={SearchUsers} options={{title: "Find Friends"}}/>
           </Stack.Navigator> : 
           <Stack.Navigator>
             <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />

@@ -29,5 +29,20 @@ export const User =  {
         } catch(err) {
             console.log(err)
         }
+    },
+
+    findFriends: async (args: {searchString: string}): Promise<void | any> => {
+        const string = args.searchString;
+        const queryString = `
+        SELECT * FROM users 
+        WHERE username 
+        ILIKE '%${string}%'`;
+        try {
+            const data = await pool.query(queryString);
+            console.log(data)
+            return data.rows;
+        } catch(err) {
+            console.log(err)
+        }
     }
 }

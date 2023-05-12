@@ -4,7 +4,9 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import { GET_USER_INFO, UPDATE_USER_STATS } from "../GQL/queries";
 import { useLazyQuery, useMutation } from "@apollo/client";
 
-export default function MyStats () {
+export default function MyStats ({route}: any) {
+
+    console.log(route.params.id)
 
     const [username, setUsername] = useState('')
 
