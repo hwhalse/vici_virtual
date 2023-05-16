@@ -18,4 +18,7 @@ export const WorkoutResolvers = {
     getLoggedWorkouts: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<void | any[]> => {
         return Workout.findLoggedWorkouts(args)
     },
+    searchWorkoutsByName: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<void | any[]> => {
+        return Workout.findByName(args)
+    },
 }

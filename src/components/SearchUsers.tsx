@@ -6,6 +6,7 @@ import { FlatList, TextInput } from "react-native-gesture-handler";
 import FriendsList from "./FriendsList";
 
 export default function SearchUsers ({navigation}: any) {
+    console.log(navigation)
 
     const [searchString, setSearchString] = useState('')
 

@@ -41,12 +41,42 @@ export const Feed = {
     saveWorkout: async (args: {input: any}): Promise<any> => {
         const {user_id, workout_id} = args.input;
         const queryString = `INSERT INTO users_saved_workouts (user_id, workout_id) values ($1, $2) RETURNING *`;
+        const queryTwo = `UPDATE workouts SET saves = saves + 1 WHERE workout_id = $1`;
         const values = [user_id, workout_id];
         try {
             const data = await pool.query(queryString, values);
+            await pool.query(queryTwo, [workout_id]);
             return data.rows[0]
         } catch(arr) {
             console.log(arr)
         }
     },
+
+    likeWorkout: async (args: {input: any}): Promise<any> => {
+        const user_id = args.input.user_id;
+        const workout_id = args.input.workout_id;
+        const queryString = `INSERT INTO users_liked_workouts (user_id, workout_id) VALUES ($1, $2) RETURNING *`;
+        const values = [user_id, workout_id];
+        try {
+            const data = await pool.query(queryString, values);
+            return 'success'
+        } catch(err) {
+            console.log(err)
+        }
+    },
+
+    getWorkoutLikes: async (args: {workout_id: number}): Promise<any> => {
+        const workout_id = args.workout_id;
+        const queryString = `
+        SELECT count(workout_id) 
+        FROM users_liked_workouts 
+        WHERE workout_id = $1`;
+        const values = [workout_id];
+        try {
+            const data = await pool.query(queryString, values);
+            return data.rows[0].count
+        } catch(err) {
+            console.log(err)
+        }
+    }
 }

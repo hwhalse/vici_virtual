@@ -32,6 +32,19 @@ export const Workout = {
 
     },
 
+    findByName: async (args: {searchString: string}): Promise<any> => {
+        const searchString = args.searchString;
+        const queryString = `SELECT * FROM workouts WHERE name ILIKE '%${searchString}%'`;
+        console.log(searchString)
+        try {
+            const data = await pool.query(queryString);
+            console.log(data)
+            return data.rows;
+        } catch(err) {
+            console.log(err)
+        }
+    },
+
     findById: async (args: {id: number}): Promise<any> => {
         const id = args.id;
         const queryString = `SELECT * from workouts WHERE id = $1`;

@@ -16,6 +16,8 @@ export const resolvers = {
     getWorkoutIds: FeedResolvers.getWorkoutIds,
     getWorkoutById: WorkoutResolvers.getWorkoutById,
     findFriends: UserResolvers.findFriends,
+    getWorkoutLikes: FeedResolvers.getWorkoutLikes,
+    searchWorkoutsByName: WorkoutResolvers.searchWorkoutsByName,
 },
   Mutation: {
     createExercise: ExerciseResolvers.createExercise,
@@ -23,5 +25,6 @@ export const resolvers = {
     logWorkout: WorkoutResolvers.uploadWorkout,
     updateStats: UserResolvers.updateStats,
     saveWorkout: FeedResolvers.saveWorkout,
+    likeWorkout: FeedResolvers.likeWorkout,
   }
 };

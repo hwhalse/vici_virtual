@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import LoggedWorkoutExercises from "./LoggedWorkoutExercises";
-import { useMutation, useLazyQuery } from "@apollo/client";
-import { GET_WORKOUT_BY_ID, SAVE_WORKOUT } from "../GQL/queries";
+import { useMutation, useLazyQuery, useQuery } from "@apollo/client";
+import { GET_WORKOUT_BY_ID, GET_WORKOUT_LIKES, LIKE_WORKOUT, SAVE_WORKOUT } from "../GQL/queries";
 
 export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
 
@@ -11,6 +11,14 @@ export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
     const day = new Date(workout.date.slice(1, -1)).toDateString()
 
     const [getWorkout] = useLazyQuery(GET_WORKOUT_BY_ID, {variables: {id: workout.workout_id}})
+    const getLikes = useQuery(GET_WORKOUT_LIKES, {
+        variables: {
+            workout_id: workout.workout_id
+        }
+    })
+    const [likeWorkout] = useMutation(LIKE_WORKOUT, {
+        onError: (error) => console.log(error)
+    })
     
     const [saveWorkout] = useMutation(SAVE_WORKOUT, {
         onError: (error) => console.log(error)
@@ -44,6 +52,17 @@ export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
         await navigation.navigate('LogWorkout', {workout: query.data.getWorkoutById})
     }
 
+    const like = () => {
+        likeWorkout({
+            variables: {
+                input: {
+                    user_id: 1,
+                    workout_id: workout.workout_id
+                }
+            }
+        })
+    }
+
     return (
         <View style={{borderColor: 'pink', borderWidth: 2, width: 350, marginTop: 5}}>
             <Text>
@@ -59,9 +78,13 @@ export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
                 Workout: {workout.name}
             </Text>}
             <FlatList data={workout.workout_data.data} keyExtractor={(item: any, index: number) => `${item.name}, ${index}`} renderItem={(({item}: any) => <LoggedWorkoutExercises list={item}/>)} />
+            <View style={{margin: 10}}>
+                {getLikes.data && <Text>Likes: {getLikes.data.getWorkoutLikes}</Text>}
+            </View>
             <View>
               <Button title="Log this workout" onPress={log}/>
               {saveable && <Button title="Save to my workouts" onPress={save} />}
+              <Button title="Like this workout" onPress={like} />
             </View>
         </View>
     )

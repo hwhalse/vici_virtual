@@ -183,3 +183,35 @@ query FindFriends($searchString: String) {
     birth_date
   }
 }`
+
+export const LIKE_WORKOUT = gql`
+mutation LikeWorkout($input: SaveWorkoutInput) {
+  likeWorkout(input: $input)
+}
+`;
+
+export const GET_WORKOUT_LIKES = gql`
+query Query($workoutId: Int) {
+  getWorkoutLikes(workout_id: $workoutId)
+}`;
+
+export const GET_WORKOUTS_BY_NAME = gql`
+query SearchWorkoutsByName($searchString: String) {
+  searchWorkoutsByName(searchString: $searchString) {
+    id
+    name
+    type
+    creator_id
+    created_date
+    level
+    exercises {
+      name
+      equipment
+      sets
+      weight
+      work
+      rest
+      reps
+    }
+  }
+}`;

@@ -27,6 +27,8 @@ type Query {
   getWorkoutIds(id: Int!): [WorkoutIds]
   getWorkoutById(id: Int!): Workout
   findFriends(searchString: String): [User]
+  getWorkoutLikes(workout_id: Int): Int
+  searchWorkoutsByName(searchString: String): [Workout]
 }
 
 type WorkoutIds {
@@ -39,6 +41,7 @@ type Mutation {
   logWorkout(input: LogWorkoutInput): LogWorkoutResponse
   updateStats(input: UserStatsInput): Stats
   saveWorkout(input: SaveWorkoutInput): String
+  likeWorkout(input: SaveWorkoutInput): String
 }
 
 input SaveWorkoutInput {
