@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import {ApolloServer} from 'apollo-server-express';
-import {Pool} from 'pg';
+import { ApolloServer } from 'apollo-server-express';
+import { Pool } from 'pg';
 import "reflect-metadata";
-import { typeDefs } from "./schema/test";
+import { typeDefs } from "./schema/main";
 import { resolvers } from "./resolvers/resolvers";
 
 export const pool = new Pool({
