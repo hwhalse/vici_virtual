@@ -106,11 +106,14 @@ mutation LogWorkout($input: LogWorkoutInput) {
 }`
 
 export const GET_LOGGED_WORKOUTS = gql`
-query GetLoggedWorkouts($username: String!) {
-  getLoggedWorkouts(username: $username) {
-    users
+query GetLoggedWorkouts($userId: Int!) {
+  getLoggedWorkouts(user_id: $userId) {
+    id
+    user_id
     date
+    private
     location
+    workout_id
     workout_data {
       data {
         name
@@ -119,7 +122,7 @@ query GetLoggedWorkouts($username: String!) {
           weight
         }
       }
-    } 
+    }
   }
 }`
 

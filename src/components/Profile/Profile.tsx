@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, TextInput, Button } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
-import { GET_USER_INFO, UPDATE_USER_STATS } from "../GQL/queries";
+import { GET_USER_INFO, UPDATE_USER_STATS } from "../../GQL/queries";
 import { useLazyQuery, useMutation } from "@apollo/client";
+import LoggedWorkouts from "./LoggedWorkouts";
 
-export default function MyStats ({route}: any) {
-
-    console.log(route.params.id)
+export default function Profile () {
 
     const [username, setUsername] = useState('')
 
@@ -93,6 +92,7 @@ export default function MyStats ({route}: any) {
                 <TextInput placeholder="Muscle Mass" onChangeText={(text: string) => setUserStats({...userStats, muscleMass: Number(text)})}>Muscle Mass: </TextInput>
                 <Button title="Update" onPress={() => update()} />
             </View>
+            <LoggedWorkouts/>
         </View>
     )
 }

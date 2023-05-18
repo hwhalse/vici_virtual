@@ -72,16 +72,22 @@ export const Workout = {
         }
     },
 
-    findLoggedWorkouts: async (args: {username: string}): Promise<void | any[]> => {
-        const username = args.username;
-        console.log(username)
-        const queryString = `SELECT * FROM workout_log WHERE users = $1 LIMIT 5`;
-        const values = [username];
+    findLoggedWorkouts: async (args: {user_id: number}): Promise<void | any[]> => {
+        const id = args.user_id;
+        console.log(id)
+        const queryString = `
+        SELECT * FROM workout_log 
+        WHERE user_id = $1 
+        ORDER BY date DESC 
+        LIMIT 5`;
+        const values = [id];
         try {
             const query = await pool.query(queryString, values);
-            console.log(query)
             const results = query.rows;
-            console.log(results[3].workout_data)
+            for (const el of results) {
+                el.date = el.date.toString()
+            }
+            console.log(results)
             return results
         } catch(err) {
             console.log(err)

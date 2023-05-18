@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import { GET_USER_INFO } from "../GQL/queries";
-import MainFeed from "./MainFeed";
-import FollowingFeed from "./FollowingFeed";
+import MainFeed from "./Feeds/MainFeed";
+import FollowingFeed from "./Feeds/FollowingFeed";
 
 export default function Home ({navigation}: any) {
 
@@ -43,12 +43,11 @@ export default function Home ({navigation}: any) {
     }, [])
 
     return (
-        <View style={{height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
+        <View style={{height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'white'}}>
             <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
             <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
-            <Button title="My Previous Workouts" onPress={() => navigation.navigate('LoggedWorkouts')}/>
             <Button title="My Saved Workouts" onPress={() => navigation.navigate('MyWorkouts')}/>
-            <Button title="My Stats" onPress={() => navigation.navigate('MyStats')}/>
+            <Button title="Profile" onPress={() => navigation.navigate('Profile')}/>
             <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
             <Button title="Find Friends" onPress={() => navigation.navigate('SearchUsers')}/>
             <Button title="Find Workouts" onPress={() => navigation.navigate('FindWorkouts')}/>

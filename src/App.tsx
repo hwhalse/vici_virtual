@@ -35,9 +35,9 @@ import SignIn from './components/SignIn';
 import LogWorkout from './components/LogWorkout';
 import CreateWorkout from './components/CreateWorkout';
 import CreateExercise from './components/CreateExercise';
-import LoggedWorkouts from './components/LoggedWorkouts';
+import LoggedWorkouts from './components/Profile/LoggedWorkouts';
 import MyWorkouts from './components/MyWorkouts';
-import MyStats from './components/MyStats';
+import Profile from './components/Profile/Profile';
 import MyFriends from './components/MyFriends';
 import SearchUsers from './components/SearchUsers';
 import FindWorkouts from './components/FindWorkouts';
@@ -110,9 +110,8 @@ function App(): JSX.Element {
             <Stack.Screen name="LogWorkout" component={LogWorkout} options={{title: 'Log Workout'}} />
             <Stack.Screen name="CreateWorkout" component={CreateWorkout} options={{title: 'Create Workout'}}/>
             <Stack.Screen name="CreateExercise" component={CreateExercise} options={{title: 'Create Exercise'}}/>
-            <Stack.Screen name="LoggedWorkouts" component={LoggedWorkouts} options={{title: "Logged Workouts"}}/>
             <Stack.Screen name="MyWorkouts" component={MyWorkouts} options={{title: "My Workouts"}}/>
-            <Stack.Screen name='MyStats' component={MyStats} options={{title: "My Stats"}}/>
+            <Stack.Screen name='Profile' component={Profile} options={{title: "Profile"}}/>
             <Stack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
             <Stack.Screen name='SearchUsers' component={SearchUsers} options={{title: "Find Friends"}}/>
             <Stack.Screen name='FindWorkouts' component={FindWorkouts} options={{title: "Find Workouts"}}/>

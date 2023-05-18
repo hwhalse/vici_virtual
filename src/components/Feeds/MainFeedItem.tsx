@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Button } from "react-native";
-import LoggedWorkoutExercises from "./LoggedWorkoutExercises";
+import LoggedWorkoutExercises from "../LoggedWorkoutExercises";
 import { useMutation, useLazyQuery, useQuery } from "@apollo/client";
-import { GET_WORKOUT_BY_ID, GET_WORKOUT_LIKES, LIKE_WORKOUT, SAVE_WORKOUT } from "../GQL/queries";
+import { GET_WORKOUT_BY_ID, GET_WORKOUT_LIKES, LIKE_WORKOUT, SAVE_WORKOUT } from "../../GQL/queries";
 
 export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
 

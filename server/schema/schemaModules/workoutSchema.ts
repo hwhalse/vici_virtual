@@ -3,7 +3,7 @@ type Query {
     getWorkoutById(id: Int!): Workout
     searchWorkoutsByName(searchString: String): [Workout]
     getWorkoutsByAuthor(id: Int!): [Workout]
-    getLoggedWorkouts(username: String!): [LogWorkout]
+    getLoggedWorkouts(user_id: Int!): [LogWorkout]
     getWorkoutIds(id: Int!): [WorkoutIds]
     getWorkoutLikes(workout_id: Int): Int
 }
