@@ -8,8 +8,6 @@ export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
 
     const [saveable, setSaveable] = useState(false)
 
-    const day = new Date(workout.date.slice(1, -1)).toDateString()
-
     const [getWorkout] = useLazyQuery(GET_WORKOUT_BY_ID, {variables: {id: workout.workout_id}})
     const getLikes = useQuery(GET_WORKOUT_LIKES, {
         variables: {
@@ -69,7 +67,7 @@ export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
                 User: {workout.author_name}
             </Text>
             <Text>
-                Date posted: {day}
+                Date posted: {workout.date}
             </Text>
             <Text>
                 Location: {workout.location}

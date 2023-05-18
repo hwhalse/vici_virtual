@@ -215,3 +215,26 @@ query SearchWorkoutsByName($searchString: String) {
     }
   }
 }`;
+
+export const GET_GLOBAL_FEED = gql`
+query GetGlobalFeed {
+  getGlobalFeed {
+    id
+    user_id
+    date
+    private
+    author_name
+    location
+    workout_id
+    workout_data {
+      data {
+        name
+        result {
+          reps
+          weight
+        }
+      }
+    }
+  }
+}
+`

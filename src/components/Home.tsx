@@ -4,11 +4,13 @@ import { Button, Text, View } from "react-native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import { GET_USER_INFO } from "../GQL/queries";
 import MainFeed from "./MainFeed";
+import FollowingFeed from "./FollowingFeed";
 
 export default function Home ({navigation}: any) {
 
     const [username, setUsername] = useState({username: '', token: ''});
     const [today, setToday] = useState('')
+    const [global, setGlobal] = useState(true)
     const [getUser, {data, loading, error}] = useLazyQuery(GET_USER_INFO, {
         variables: {
             username: username.username
@@ -50,7 +52,8 @@ export default function Home ({navigation}: any) {
             <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
             <Button title="Find Friends" onPress={() => navigation.navigate('SearchUsers')}/>
             <Button title="Find Workouts" onPress={() => navigation.navigate('FindWorkouts')}/>
-            {data && <MainFeed navigation={navigation} userData={data.getUser}/>}
+            <Button title="Toggle Feed" onPress={() => setGlobal(!global)} />
+            {data ? global ? <MainFeed navigation={navigation} userData={data.getUser}/> : <FollowingFeed navigation={navigation} userData={data.getUser}  /> : ''}
         </View>
     )
 }

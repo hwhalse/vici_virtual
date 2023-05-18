@@ -17,4 +17,7 @@ export const FeedResolvers = {
     getWorkoutLikes: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<any> => {
         return await Feed.getWorkoutLikes(args)
     },
+    getGlobalFeed: async (parent: any, args: any, ctx: {req: Request, res: Response}, info: any): Promise<any> => {
+        return await Feed.getGlobalFeed()
+    },
 }

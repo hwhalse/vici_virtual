@@ -32,6 +32,7 @@ type LogWorkout {
     id: Int
     user_id: Int
     date: String
+    private: Boolean
     author_name: String
     location: String
     workout_id: Int

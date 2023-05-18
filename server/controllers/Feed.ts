@@ -25,6 +25,27 @@ export const Feed = {
         }
     },
 
+    getGlobalFeed: async (): Promise<any> => {
+        const queryString = `
+        SELECT w.*, u.username 
+        AS author_name 
+        FROM workout_log w 
+        INNER JOIN users u 
+        ON w.user_id = u.id 
+        WHERE private = false 
+        ORDER BY date DESC 
+        LIMIT 10`;
+        try {
+            const data = await pool.query(queryString);
+            for (const row of data.rows) {
+                row.date = row.date.toString()
+            }
+            return data.rows
+        } catch(err) {
+            console.log(err)
+        }
+    },
+
     getSavedWorkoutIDs: async (args: {id: number}): Promise<any> => {
         const id = args.id;
         const queryString = `SELECT workout_id FROM users_saved_workouts WHERE user_id = $1`;

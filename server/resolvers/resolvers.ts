@@ -18,6 +18,7 @@ export const resolvers = {
     findFriends: UserResolvers.findFriends,
     getWorkoutLikes: FeedResolvers.getWorkoutLikes,
     searchWorkoutsByName: WorkoutResolvers.searchWorkoutsByName,
+    getGlobalFeed: FeedResolvers.getGlobalFeed,
 },
   Mutation: {
     createExercise: ExerciseResolvers.createExercise,
