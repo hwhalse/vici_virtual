@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Button } from "react-native";
 import { useQuery } from "@apollo/client";
-import { GET_EXERCISES } from "../GQL/queries";
+import { GET_EXERCISES } from "../../GQL/queries";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import LogWorkout from "./LogWorkout";
 

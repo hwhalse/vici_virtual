@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, TouchableOpacity, FlatList } from "react-native";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import { CREATE_EXERCISE, GET_EQUIPMENT, SEARCH_EQUIPMENT } from "../GQL/queries";
+import { CREATE_EXERCISE, GET_EQUIPMENT, SEARCH_EQUIPMENT } from "../../GQL/queries";
 import Equipment from "./Equipment";
 import CreateExerciseList from "./CreateExerciseList";
 

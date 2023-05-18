@@ -1,8 +1,8 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { View, Text, TextInput, Button } from 'react-native';
-import { GET_WORKOUTS_BY_NAME } from "../GQL/queries";
-import WorkoutFeed from "./WorkoutFeed";
+import { GET_WORKOUTS_BY_NAME } from "../../GQL/queries";
+import WorkoutFeed from "../MainFeed/WorkoutFeed";
 import { FlatList } from "react-native-gesture-handler";
 
 export default function FindWorkouts ({navigation}: any) {

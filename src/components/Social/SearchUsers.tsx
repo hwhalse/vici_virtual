@@ -1,12 +1,11 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { View, Text, Button } from "react-native";
-import { SEARCH_FOR_FRIENDS } from "../GQL/queries";
+import { SEARCH_FOR_FRIENDS } from "../../GQL/queries";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import FriendsList from "./FriendsList";
 
 export default function SearchUsers ({navigation}: any) {
-    console.log(navigation)
 
     const [searchString, setSearchString] = useState('')
 

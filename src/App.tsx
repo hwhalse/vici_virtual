@@ -31,16 +31,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Home from './components/Home';
-import SignIn from './components/SignIn';
-import LogWorkout from './components/LogWorkout';
-import CreateWorkout from './components/CreateWorkout';
-import CreateExercise from './components/CreateExercise';
+import SignIn from './components/Auth/SignIn';
+import LogWorkout from './components/MainFeed/LogWorkout';
+import CreateWorkout from './components/Workouts/CreateWorkout';
+import CreateExercise from './components/Workouts/CreateExercise';
 import LoggedWorkouts from './components/Profile/LoggedWorkouts';
-import MyWorkouts from './components/MyWorkouts';
+import MyWorkouts from './components/Workouts/MyWorkouts';
 import Profile from './components/Profile/Profile';
-import MyFriends from './components/MyFriends';
-import SearchUsers from './components/SearchUsers';
-import FindWorkouts from './components/FindWorkouts';
+import MyFriends from './components/Social/MyFriends';
+import SearchUsers from './components/Social/SearchUsers';
+import FindWorkouts from './components/Workouts/FindWorkouts';
+import AppHeader from './components/AppHeader';
 
 
 type SectionProps = PropsWithChildren<{
@@ -115,11 +116,12 @@ function App(): JSX.Element {
             <Stack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
             <Stack.Screen name='SearchUsers' component={SearchUsers} options={{title: "Find Friends"}}/>
             <Stack.Screen name='FindWorkouts' component={FindWorkouts} options={{title: "Find Workouts"}}/>
-          </Stack.Navigator> : 
+          </Stack.Navigator>
+          : 
           <Stack.Navigator>
             <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />
           </Stack.Navigator>
-        }
+          }
       </NavigationContainer>
     </ApolloProvider>
   );

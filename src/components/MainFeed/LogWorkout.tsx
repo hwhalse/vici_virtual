@@ -3,7 +3,7 @@ import { FlatList, Text, View, ListRenderItem, Button } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage";
 import { useMutation } from "@apollo/client";
-import { LOG_WORKOUT } from "../GQL/queries";
+import { LOG_WORKOUT } from "../../GQL/queries";
 
 interface RepsWeight {
     reps: number

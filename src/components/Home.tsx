@@ -45,12 +45,10 @@ export default function Home ({navigation}: any) {
     return (
         <View style={{height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'white'}}>
             <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
-            <Button title="Create Workout" onPress={() => navigation.navigate('CreateWorkout')}></Button>
-            <Button title="My Saved Workouts" onPress={() => navigation.navigate('MyWorkouts')}/>
+            <Button title="My Workouts" onPress={() => navigation.navigate('MyWorkouts')}/>
             <Button title="Profile" onPress={() => navigation.navigate('Profile')}/>
             <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
             <Button title="Find Friends" onPress={() => navigation.navigate('SearchUsers')}/>
-            <Button title="Find Workouts" onPress={() => navigation.navigate('FindWorkouts')}/>
             <Button title="Toggle Feed" onPress={() => setGlobal(!global)} />
             {data ? global ? <MainFeed navigation={navigation} userData={data.getUser}/> : <FollowingFeed navigation={navigation} userData={data.getUser}  /> : ''}
         </View>
