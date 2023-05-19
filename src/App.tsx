@@ -8,14 +8,15 @@
 import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  Button,
   StyleSheet,
   Text,
   useColorScheme,
   AppRegistry,
   View,
+  TouchableOpacity,
+  Image,
+  Modal,
 } from 'react-native';
 
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
@@ -41,7 +42,13 @@ import Profile from './components/Profile/Profile';
 import MyFriends from './components/Social/MyFriends';
 import SearchUsers from './components/Social/SearchUsers';
 import FindWorkouts from './components/Workouts/FindWorkouts';
-import AppHeader from './components/AppHeader';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Constants from 'expo-constants';
+import 'react-native-gesture-handler';
+import HomeStackScreen from './Navigators/HomeStack';
+import ProfileStackScreen from './Navigators/ProfileStack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 type SectionProps = PropsWithChildren<{
@@ -74,7 +81,8 @@ function Section({children, title}: SectionProps): JSX.Element {
   );
 }
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache()
@@ -106,7 +114,44 @@ function App(): JSX.Element {
     <ApolloProvider client={client}>
       <NavigationContainer>
         { authenticationStatus ? 
+          <Tab.Navigator screenOptions={
+            {
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+              tabBarActiveBackgroundColor: 'gainsboro'
+            }
+            }>
+            <Tab.Screen name="Home" component={HomeStackScreen} />
+            <Tab.Screen name="Profile" component={ProfileStackScreen}/>
+          </Tab.Navigator> : 
           <Stack.Navigator>
+            <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />
+          </Stack.Navigator>
+        }
+        {/* { authenticationStatus ? 
+          <Stack.Navigator 
+          screenOptions={
+            {
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+              headerLeft: () => (
+                <TouchableOpacity style={{alignItems: 'center'}} activeOpacity={0.7} onPress={() =>  setModal(true)}>
+                  <Image style={{height: 20, width: 20}} source={require('../resources/icons8-menu-50.png')}/>
+                </TouchableOpacity>
+              ),
+            }
+          }>
             <Stack.Screen name="Home" component={Home} options={{title: 'Welcome'}} />
             <Stack.Screen name="LogWorkout" component={LogWorkout} options={{title: 'Log Workout'}} />
             <Stack.Screen name="CreateWorkout" component={CreateWorkout} options={{title: 'Create Workout'}}/>
@@ -121,7 +166,7 @@ function App(): JSX.Element {
           <Stack.Navigator>
             <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />
           </Stack.Navigator>
-          }
+          } */}
       </NavigationContainer>
     </ApolloProvider>
   );
