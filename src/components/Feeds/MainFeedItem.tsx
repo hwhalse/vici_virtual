@@ -62,27 +62,30 @@ export default function MainFeedItem ({workout, workoutIds, navigation}: any) {
     }
 
     return (
-        <View style={{borderColor: 'pink', borderWidth: 2, width: 350, marginTop: 5}}>
-            <Text>
-                User: {workout.author_name}
-            </Text>
-            <Text>
-                Date posted: {workout.date}
-            </Text>
-            <Text>
-                Location: {workout.location}
-            </Text>
+        <View style={{borderBottomColor: 'pink', borderBottomWidth: 2, marginTop: 5}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around', marginBottom: 5}}>
+                <Text style={{fontWeight: 'bold'}}>
+                    @{workout.author_name}
+                </Text>
+                {/* <Text style={{fontWeight: 'bold'}}>
+                    {workout.location}
+                </Text> */}
+                <Text>
+                    {workout.date.slice(0, 10)}
+                </Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 5}}>
+                <Text style={{fontSize: 15, fontWeight: 'bold'}}>The Workout</Text>
+            </View>
             {workout.name &&<Text>
                 Workout: {workout.name}
             </Text>}
-            <FlatList data={workout.workout_data.data} keyExtractor={(item: any, index: number) => `${item.name}, ${index}`} renderItem={(({item}: any) => <LoggedWorkoutExercises list={item}/>)} />
-            <View style={{margin: 10}}>
+            <FlatList data={workout.workout_data.data} keyExtractor={(item: any, index: number) => `${item.name}, ${index}`} renderItem={(({index, item}: any) => <LoggedWorkoutExercises index={index} list={item}/>)} />
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                 {getLikes.data && <Text>Likes: {getLikes.data.getWorkoutLikes}</Text>}
-            </View>
-            <View>
-              <Button title="Log this workout" onPress={log}/>
-              {saveable && <Button title="Save to my workouts" onPress={save} />}
-              <Button title="Like this workout" onPress={like} />
+                <Button title="Log this workout" onPress={log}/>
+                {saveable && <Button title="Save to my workouts" onPress={save} />}
+                <Button title="Like this workout" onPress={like} />
             </View>
         </View>
     )

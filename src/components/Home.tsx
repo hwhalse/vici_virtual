@@ -5,8 +5,10 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import { GET_USER_INFO } from "../GQL/queries";
 import MainFeed from "./Feeds/MainFeed";
 import FollowingFeed from "./Feeds/FollowingFeed";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Home ({navigation}: any) {
+    console.log(navigation)
 
     const [username, setUsername] = useState({username: '', token: ''});
     const [today, setToday] = useState('')
@@ -26,7 +28,6 @@ export default function Home ({navigation}: any) {
     const getUserInfo = async (): Promise<void> => {
         try {
           const info = await EncryptedStorage.getItem("user_session");
-          console.log(info)
           if (info !== null) {
             const obj = await JSON.parse(info)
             setUsername(obj)
@@ -44,12 +45,18 @@ export default function Home ({navigation}: any) {
 
     return (
         <View style={{height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'white'}}>
-            <Text style={{padding: 20, fontSize: 30, fontWeight: "bold"}}>Profile: {username.username}</Text>
-            <Button title="My Workouts" onPress={() => navigation.navigate('MyWorkouts')}/>
-            <Button title="Profile" onPress={() => navigation.navigate('Profile')}/>
-            <Button title="Following" onPress={() => navigation.navigate('MyFriends')}/>
-            <Button title="Find Friends" onPress={() => navigation.navigate('SearchUsers')}/>
-            <Button title="Toggle Feed" onPress={() => setGlobal(!global)} />
+            <View style={{flexDirection: 'row', justifyContent: 'space-around', width: '100%', borderBottomColor: 'gainsboro', borderBottomWidth: 1, padding: 10, marginBottom: 5}}>
+                <TouchableOpacity onPress={() => setGlobal(true)}>
+                    <Text style={{color: 'blue', fontSize: 20}}>
+                        Everyone
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setGlobal(false)}>
+                    <Text style={{color: 'blue', fontSize: 20}}>
+                        Friends Only
+                    </Text>
+                </TouchableOpacity>
+            </View>
             {data ? global ? <MainFeed navigation={navigation} userData={data.getUser}/> : <FollowingFeed navigation={navigation} userData={data.getUser}  /> : ''}
         </View>
     )

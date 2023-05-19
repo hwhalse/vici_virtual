@@ -55,34 +55,35 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+// function Section({children, title}: SectionProps): JSX.Element {
+//   const isDarkMode = useColorScheme() === 'dark';
+//   return (
+//     <View style={styles.sectionContainer}>
+//       <Text
+//         style={[
+//           styles.sectionTitle,
+//           {
+//             color: isDarkMode ? Colors.white : Colors.black,
+//           },
+//         ]}>
+//         {title}
+//       </Text>
+//       <Text
+//         style={[
+//           styles.sectionDescription,
+//           {
+//             color: isDarkMode ? Colors.light : Colors.dark,
+//           },
+//         ]}>
+//         {children}
+//       </Text>
+//     </View>
+//   );
+// }
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache()
@@ -114,28 +115,8 @@ function App(): JSX.Element {
     <ApolloProvider client={client}>
       <NavigationContainer>
         { authenticationStatus ? 
-          <Tab.Navigator screenOptions={
-            {
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: '#f4511e',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              tabBarActiveBackgroundColor: 'gainsboro'
-            }
-            }>
-            <Tab.Screen name="Home" component={HomeStackScreen} />
-            <Tab.Screen name="Profile" component={ProfileStackScreen}/>
-          </Tab.Navigator> : 
-          <Stack.Navigator>
-            <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />
-          </Stack.Navigator>
-        }
-        {/* { authenticationStatus ? 
-          <Stack.Navigator 
+          <Drawer.Navigator 
+          initialRouteName='Home'
           screenOptions={
             {
               headerStyle: {
@@ -145,28 +126,15 @@ function App(): JSX.Element {
               headerTitleStyle: {
                 fontWeight: 'bold',
               },
-              headerLeft: () => (
-                <TouchableOpacity style={{alignItems: 'center'}} activeOpacity={0.7} onPress={() =>  setModal(true)}>
-                  <Image style={{height: 20, width: 20}} source={require('../resources/icons8-menu-50.png')}/>
-                </TouchableOpacity>
-              ),
             }
-          }>
-            <Stack.Screen name="Home" component={Home} options={{title: 'Welcome'}} />
-            <Stack.Screen name="LogWorkout" component={LogWorkout} options={{title: 'Log Workout'}} />
-            <Stack.Screen name="CreateWorkout" component={CreateWorkout} options={{title: 'Create Workout'}}/>
-            <Stack.Screen name="CreateExercise" component={CreateExercise} options={{title: 'Create Exercise'}}/>
-            <Stack.Screen name="MyWorkouts" component={MyWorkouts} options={{title: "My Workouts"}}/>
-            <Stack.Screen name='Profile' component={Profile} options={{title: "Profile"}}/>
-            <Stack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
-            <Stack.Screen name='SearchUsers' component={SearchUsers} options={{title: "Find Friends"}}/>
-            <Stack.Screen name='FindWorkouts' component={FindWorkouts} options={{title: "Find Workouts"}}/>
-          </Stack.Navigator>
-          : 
+            }>
+            <Drawer.Screen name="Home" component={HomeStackScreen} />
+            <Drawer.Screen name="Profile" component={ProfileStackScreen}/>
+          </Drawer.Navigator> : 
           <Stack.Navigator>
             <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />
           </Stack.Navigator>
-          } */}
+        }
       </NavigationContainer>
     </ApolloProvider>
   );

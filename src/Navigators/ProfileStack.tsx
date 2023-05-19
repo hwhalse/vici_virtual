@@ -13,18 +13,11 @@ const ProfileStack = createNativeStackNavigator();
 
 export default function ProfileStackScreen() {
     return (
-      <ProfileStack.Navigator screenOptions={{headerStyle: {
-        backgroundColor: '#f4511e',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      }
-    }}>
+      <ProfileStack.Navigator screenOptions={{headerShown: false}}>
+        <ProfileStack.Screen name='Profile!' component={Profile} options={{title: "Profile"}}/>
         <ProfileStack.Screen name="CreateWorkout" component={CreateWorkout} options={{title: 'Create Workout'}}/>
         <ProfileStack.Screen name="CreateExercise" component={CreateExercise} options={{title: 'Create Exercise'}}/>
         <ProfileStack.Screen name="MyWorkouts" component={MyWorkouts} options={{title: "My Workouts"}}/>
-        <ProfileStack.Screen name='Profile' component={Profile} options={{title: "Profile"}}/>
         <ProfileStack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
       </ProfileStack.Navigator>
     );
