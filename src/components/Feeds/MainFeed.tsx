@@ -17,9 +17,10 @@ export default function MainFeed ({userData, navigation}: any) {
 
 
     return (
-        <View>
+        <View style={{flex: 1, width: '100%'}}>
             {data && results.data &&
-            <FlatList data={data.getGlobalFeed} keyExtractor={((item, index) => `${item.author_id}, ${index}`)} renderItem={(({item}) => <MainFeedItem workout={item} navigation={navigation} workoutIds={results.data.getWorkoutIds} />)} /> 
+            <FlatList data={data.getGlobalFeed} keyExtractor={((item, index) => `${item.author_id}, ${index}`)} renderItem={(({item}) => 
+            <MainFeedItem workout={item} navigation={navigation} workoutIds={results.data.getWorkoutIds} />)} /> 
             }
         </View>
     )

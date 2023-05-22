@@ -49,6 +49,7 @@ import 'react-native-gesture-handler';
 import HomeStackScreen from './Navigators/HomeStack';
 import ProfileStackScreen from './Navigators/ProfileStack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MakeWorkout from './Navigators/MakeWorkout';
 
 
 type SectionProps = PropsWithChildren<{
@@ -115,22 +116,17 @@ function App(): JSX.Element {
     <ApolloProvider client={client}>
       <NavigationContainer>
         { authenticationStatus ? 
-          <Drawer.Navigator 
-          initialRouteName='Home'
+          <Tab.Navigator 
+          initialRouteName='HomeStack'
           screenOptions={
             {
-              headerStyle: {
-                backgroundColor: '#f4511e',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
+              headerShown: false
             }
             }>
-            <Drawer.Screen name="Home" component={HomeStackScreen} />
-            <Drawer.Screen name="Profile" component={ProfileStackScreen}/>
-          </Drawer.Navigator> : 
+            <Tab.Screen name="Home Stack" component={HomeStackScreen} />
+            <Tab.Screen name="Make Workout" component={MakeWorkout}/>
+            <Tab.Screen name="Profile Stack" component={ProfileStackScreen}/>
+          </Tab.Navigator> : 
           <Stack.Navigator>
             <Stack.Screen name="Login" component={SignIn} options={{title: 'Login'}} />
           </Stack.Navigator>

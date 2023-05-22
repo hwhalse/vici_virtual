@@ -12,14 +12,14 @@ const HomeStack = createNativeStackNavigator();
 
 export default function HomeStackScreen() {
     return (
-        <GestureHandlerRootView style={{height: 1000}}>
-      <HomeStack.Navigator screenOptions={{headerShown: false}}>
-        <HomeStack.Screen name="Home!" component={Home}/>
-        <HomeStack.Screen name="LogWorkout" component={LogWorkout} options={{title: 'Log Workout'}} />
-        <HomeStack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
-        <HomeStack.Screen name='SearchUsers' component={SearchUsers} options={{title: "Find Friends"}}/>
-        <HomeStack.Screen name='FindWorkouts' component={FindWorkouts} options={{title: "Find Workouts"}}/>
-      </HomeStack.Navigator>
+      <GestureHandlerRootView style={{height: '100%'}}>
+        <HomeStack.Navigator screenOptions={{headerShown: true}}>
+          <HomeStack.Screen name="Home" component={Home} options={{title: 'Feed'}} />
+          <HomeStack.Screen name="LogWorkout" component={LogWorkout} options={{title: 'Log Workout'}} />
+          <HomeStack.Screen name='MyFriends' component={MyFriends} options={{title: "My Friends"}}/>
+          <HomeStack.Screen name='SearchUsers' component={SearchUsers} options={{title: "Find Friends"}}/>
+          <HomeStack.Screen name='FindWorkouts' component={FindWorkouts} options={{title: "Find Workouts"}}/>
+        </HomeStack.Navigator>
       </GestureHandlerRootView>
     );
   }

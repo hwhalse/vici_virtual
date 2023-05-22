@@ -6,11 +6,11 @@ export default function LoggedWorkoutExercises ({list, index}: any) {
     
     return (
         <View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingTop: 5, paddingBottom: 5}}>
                 <Text style={{fontWeight: 'bold'}}>
                     Exercise #{index + 1}:  
                 </Text>
-                <Text style={{flexWrap: 'wrap'}}>
+                <Text style={{marginLeft: 2, flex: 1, flexWrap: 'wrap'}}>
                         {list.name}
                 </Text>
             </View>

@@ -8,7 +8,6 @@ import FollowingFeed from "./Feeds/FollowingFeed";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Home ({navigation}: any) {
-    console.log(navigation)
 
     const [username, setUsername] = useState({username: '', token: ''});
     const [today, setToday] = useState('')
