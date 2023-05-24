@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FlatList, Text, View, ListRenderItem, Button, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage";
 import { useMutation } from "@apollo/client";
 import { LOG_WORKOUT } from "../../GQL/queries";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import { Svg, Circle } from "react-native-svg";
+import Animated, { useAnimatedProps, useSharedValue, withTiming, useDerivedValue } from "react-native-reanimated";
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const radius = 45;
+const AnimatedText = Animated.createAnimatedComponent(Text)
 
 interface RepsWeight {
     reps: number
@@ -23,17 +30,26 @@ interface ExerciseReps {
 }
 
 export default function LogWorkout ({route, navigation}: any) {
+
     const {workout} = route.params
-    let times = [3]
-    let order = ['Ready']
-    const [count, setCount] = useState(times[0])
-    console.log(times)
-    const [intervalId, setIntervalId] = useState<any | null>(null)
+    let times = useRef([3])
+    let order = useRef(['Ready'])
+    const [count, setCount] = useState(times.current[0])
+    
     const [running, setRunning] = useState(false)
-    const [currentExercise, setCurrentExercise] = useState(order[0])
+    const [currentExercise, setCurrentExercise] = useState(order.current[0])
     const [results, setResults] = useState<ExerciseReps[]>([])
-    const [username, setUsername] = useState('')
     const [timerMode, setTimerMode] = useState(true)
+   
+    let intervalRef = useRef<any>()
+
+    const strokeOffset = useSharedValue(radius * Math.PI * 2);
+    const circumference = radius * Math.PI * 2
+
+    const percentage = useDerivedValue(() => {
+        const number = ((circumference - strokeOffset.value) / (circumference)) * 100;
+        return withTiming(number, {duration: 2000});
+      });
 
     const [logWorkout] = useMutation(LOG_WORKOUT, {
         onError: ((err: Error) => console.log(err))
@@ -42,47 +58,44 @@ export default function LogWorkout ({route, navigation}: any) {
     const breaks = 120;
 
     const countdown = () => {
-        if (running) return
         setRunning(true)
-        let time = times[0]
-        setCurrentExercise(order[0])
-        if (order[0] !== 'Ready' && order[0] !== 'rest' && order[0] !== 'break') {
-            console.log(results)
+
+        if (times.current.length === 0) return clearInterval(intervalRef.current)
+       
+        if (order.current[0] !== 'Ready' && order.current[0] !== 'rest' && order.current[0] !== 'break') {
             const newArr = results;
             if (newArr.length === 0) {
-                newArr.push({name: order[0], result: {reps: [0], weight: [0]}})
+                newArr.push({name: order.current[0], result: {reps: [0], weight: [0]}})
             } else {
                 let addNew = true
                 for (const ex of newArr) {
-                    console.log('exercise name', ex)
-                    console.log('list name', order[0])
-                    if (ex.name === order[0]) {
+                    if (ex.name === order.current[0]) {
                         ex.result.reps.push(0)
                         ex.result.weight.push(0)
                         addNew = false
                     }
                 }
-                if (addNew) newArr.push({name: order[0], result: {reps: [0], weight: [0]}})
+                if (addNew) newArr.push({name: order.current[0], result: {reps: [0], weight: [0]}})
             }
             setResults(newArr)
         }
-        setCount(time)
-        let stopwatch = setInterval(() => {
-            setIntervalId(stopwatch)
-            setCount(prev => prev - 1)
-            time--
-            if (time <= 0) {
-                clearInterval(stopwatch); 
-                setRunning(false)
-                times.shift();
-                order.shift();
-                if (times.length > 0) {
+
+        setCount(times.current[0])
+        times.current = [...times.current.slice(1)];
+        order.current = [...order.current.slice(1)];
+
+        intervalRef.current = setInterval(() => {
+            setCount(prev => {
+                console.log(prev)
+                if (prev === 0) {
+                    stopTimer()
                     countdown()
+                    return 0
                 } else {
-                    return
+                    return prev - 1
                 }
-            }
-        }, 100)
+            })
+        }, 1000)
     }
 
     const getUserInfo = async (): Promise<void> => {
@@ -91,32 +104,35 @@ export default function LogWorkout ({route, navigation}: any) {
           console.log(info)
           if (info !== null) {
             const obj = await JSON.parse(info)
-            setUsername(obj.username)
           }
         } catch(err) {
             console.log(err)
         }
     }
 
-    const stop = () => {
-        clearInterval(intervalId)
-        setCount(times[0])
+    const stopTimer = () => {
+        clearInterval(intervalRef.current)
+        intervalRef.current = 0
+        setRunning(false)
+    }
+
+    const pauseTimer = () => {
+        stopTimer()
+        times.current = [count, ...times.current]
     }
 
     const populateTimes = () => {
-        times = [3];
-        order = ['Ready'];
+        times.current = [3];
+        order.current = ['Ready'];
         for (const exercise of workout.exercises) {
             for (let i = 0; i < exercise.sets; i++) {
-                order.push(exercise.name)
-                order.push('rest')
-                times.push(exercise.work)
-                times.push(exercise.rest)
+                order.current = [...order.current, exercise.name, 'rest']
+                times.current = [...times.current, exercise.work, exercise.rest]
             }
-            times.push(breaks)
-            order.push('break')
+            times.current = [...times.current, breaks]
+            order.current = [...order.current, 'break']
         }
-        order.push('done!')
+        order.current = [...order.current, 'done']
     }
 
     const addSet = (name: string) => {
@@ -128,12 +144,10 @@ export default function LogWorkout ({route, navigation}: any) {
             }
         }
         setResults(newArr)
-        console.log(results)
     }
 
     const submitWorkout = () => {
         if (results.length === 0) return
-        console.log(results)
         const input = {
             workout_id: workout.id,
             results: results,
@@ -155,6 +169,12 @@ export default function LogWorkout ({route, navigation}: any) {
         setResults([])
     }
 
+    const animatedTextProps = useAnimatedProps(() => {
+        return {
+          text: `${Math.round(percentage.value)}`,
+        };
+      });
+
     const populateWorkout = () => {
         setResults([])
         const newArr = [...results];
@@ -165,10 +185,17 @@ export default function LogWorkout ({route, navigation}: any) {
         setResults(newArr)
     }
 
+    const animatedCircleProps = useAnimatedProps(() => {
+        return {
+            strokeDashoffset: withTiming(strokeOffset.value, {duration: 2000})
+        }
+    })
+
     useEffect(() => {
         populateTimes()
         getUserInfo()
         if (timerMode === false) populateWorkout()
+        strokeOffset.value = 0
     }, [timerMode])
     
     return (
@@ -178,20 +205,46 @@ export default function LogWorkout ({route, navigation}: any) {
                     Workout: {workout.name}
                 </Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10, alignItems: 'center'}}>
-                <Text style={{fontWeight: 'bold'}}>
-                    Mode:
-                </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15, alignItems: 'center', marginBottom: 15}}>
                 <TouchableOpacity onPress={toggleTimer} style={{backgroundColor: 'red', padding: 6, borderRadius: 5, marginLeft: 5}}>
-                    <Text>{timerMode ? 'Timed' : 'Freestyle'}</Text>
+                    <Text>{timerMode ? 'Turn timer off' : 'Turn timer on'}</Text>
                 </TouchableOpacity>
             </View>
             {timerMode ?
             <View>
-                <Text>Time: {count}</Text>
-                <Text>Current exercise: {currentExercise}</Text>
+                <View style={{alignItems: 'center', marginTop: 10, justifyContent: 'center'}}>
+                    <CountdownCircleTimer
+                        isPlaying={running}
+                        key={times.current[0]}
+                        duration={times.current[0]}
+                        // onComplete={(time: number): any => {return {shouldRepeat: true, delay: 1.5}}}
+                        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+                        colorsTime={[7, 5, 2, 0]}>
+                        {({remainingTime}) => <Text>{remainingTime}</Text>}
+                    </CountdownCircleTimer>
+                    {/* <AnimatedText style={{color: 'black', fontSize: 15, fontWeight: 'bold', position: 'absolute'}} animatedProps={animatedTextProps}/> */}
+                    {/* <AnimatedText>
+
+                    </AnimatedText>
+                    <Svg height="50%" width="50%" viewBox="0 0 100 100" >
+                        <AnimatedCircle 
+                        animatedProps={animatedCircleProps} 
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke="rgb(246, 79, 89)"
+                        fill={'white'}
+                        opacity={0.2}
+                        strokeWidth="5"
+                        strokeDasharray={`${radius * Math.PI * 2}`}
+                        />
+                    </Svg> */}
+                </View>
+                <View style={{alignItems: 'center', marginTop: 10, marginBottom: 10}}>
+                    <Text style={{fontSize: 20}}>Current exercise: {currentExercise}</Text>
+                </View>
                 <Button title="start workout" onPress={countdown}/>
-                <Button title="stop" onPress={stop}/>
+                <Button title="stop" onPress={stopTimer}/>
                 {results.length > 0 && 
                 <FlatList 
                     data={results} 
